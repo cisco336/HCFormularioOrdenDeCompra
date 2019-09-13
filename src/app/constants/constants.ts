@@ -60,6 +60,7 @@ export const strings = {
   deliverDate: 'Fecha entrega',
   deliverType: 'Tipo de entrega',
   realDeliverDate: 'Fecha real de entrega',
+  realEventDate: 'Fecha real cambio de estado',
   startDate: 'Fecha incio',
   endDate: 'Fecha fin',
   editDate: 'Fecha modificación',
@@ -139,10 +140,14 @@ export const strings = {
   height: 'Alto',
   yes: 'Si',
   no: 'No',
-  label: 'Rotulo'
+  label: 'Rotulo',
+  purchaceOrderState: 'Estado Orden de Compra',
+  homologationState: 'Estado homologación',
+  createdBy: 'Creado por',
 };
 
 export const detailsTable = {
+  FECHA_REAL_EVENTO: strings.realEventDate,
   FECHA_CREACION: strings.creationDate,
   NAME_FAMILIA: strings.family,
   ORG_NAME_FULL: strings.locality,
@@ -189,7 +194,10 @@ export const longMessages = {
 };
 
 export class Constants {
+  // DEV & QA
   static readonly PATHROTULO = 'http://200.69.100.66/2IMPRESIONGUIASpruebas/ISticker_ZEA.aspx?';
+  // PROD
+  // static readonly PATHROTULO = 'http://200.69.100.66/2IMPRESIONGUIAS/ISticker_ZEA2.aspx';
 
   // DEV
   static readonly APIORDENDECOMPRA = 'http://10.23.14.164:9002/Servicios/ORDEN_COMPRA_1.0.0/api';
@@ -203,12 +211,16 @@ export class Constants {
   static readonly USR = 'EMPCAR01';
   static readonly PASSWD = 'EMPCAR1';
   // PROD
-  // static readonly USRPASSWD = 'EMPCAR01:EMPCAR1';
-  // static readonly USR = 'EMPCAR01';
-  // static readonly PASSWD = 'EMPCAR1';
+  // static readonly USRPASSWD = 'EAE6VELE:51AAD9C1';
+  // static readonly USR = 'EAE6VELE';
+  // static readonly PASSWD = '51AAD9C1';
 
   static readonly AUTH = 'https://apim-prod-proxy.sodhc.co/logisticaSeguridadAutenticacion/authenticated';
+
+  // DEV & QA
   static readonly GUIA = 'http://200.69.100.66/ServicioLiquidacionRESTpruebas/Service1.svc/Generacion';
+  // PROD
+  // static readonly GUIA = 'http://200.69.100.66/ServicioLiquidacionREST/Service1.svc/Generacion';
 
   // DEV
   static readonly APIGUIA = 'http://10.23.14.164:9001/Servicios/Transportadora_1.0.0/api';
