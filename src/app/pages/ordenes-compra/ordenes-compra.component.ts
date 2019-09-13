@@ -427,7 +427,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       p_origen: '-1',
       p_usuario: this.usr
     };
-    
+
     this._dataService
       .postTablaPrincipalOC(queryConsultar)
       .toPromise()
@@ -546,14 +546,16 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
               this.aux = false;
               this.errorHandling(error);
             }
-        );
+          );
         const form = this.mainFilterForm;
         const queryTracking = {
           p_transaccion: 'TR',
           p_pmg_po_number: element,
           p_prd_lvl_child: -1,
           p_vpc_tech_key: form.get('proveedorControl').value['ID'],
-          p_fecha_inicio: form.get('fechaInicioControl').value.format('DD/MM/YYYY'),
+          p_fecha_inicio: form
+            .get('fechaInicioControl')
+            .value.format('DD/MM/YYYY'),
           p_fecha_fin: form.get('fechaFinControl').value.format('DD/MM/YYYY'),
           p_fecha_real: '-1',
           p_id_estado: form.get('estadosControl').value.ID,
@@ -565,7 +567,8 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
           .toPromise()
           .then(data => {
             this._componentService.setTracking(data);
-          }).catch(() => {
+          })
+          .catch(() => {
             // Controlar error TODO
           });
       }
