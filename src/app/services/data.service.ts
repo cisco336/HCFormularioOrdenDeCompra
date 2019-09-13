@@ -27,7 +27,7 @@ export class DataService {
   protected generateBasicHeadersJWT(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Ocp-Apim-Subscription-Key': Constants.SUBSCRIPTIONKEY,
+      // 'Ocp-Apim-Subscription-Key': Constants.SUBSCRIPTIONKEY,
       Authorization: 'Bearer ' + this.token.value
     });
   }
