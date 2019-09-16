@@ -215,8 +215,6 @@ export class Constants {
   // static readonly USR = 'EAE6VELE';
   // static readonly PASSWD = '51AAD9C1';
 
-  static readonly AUTH = 'https://apim-prod-proxy.sodhc.co/logisticaSeguridadAutenticacion/authenticated';
-
   // DEV & QA
   static readonly GUIA = 'http://200.69.100.66/ServicioLiquidacionRESTpruebas/Service1.svc/Generacion';
   // PROD
@@ -228,13 +226,7 @@ export class Constants {
   // static readonly APIGUIA = 'http://10.23.14.163:9001/Servicios/Transportadora_1.0.0/api';
   // PROD
   // static readonly APIGUIA = 'http://10.23.18.163:9001/Servicios/Transportadora_1.0.0/api';
-
   // Local
   // static readonly APIGUIA = 'http://localhost/Abastecimiento/Servicios/Transportadoras/api';
-  // DEV
-  static readonly SUBSCRIPTIONKEY = 'dfeb9e69860f45258647cc7ba45fb040';
-  // QA
-  // static readonly SUBSCRIPTIONKEY = "442c55ae313642028c9eb69dc4220dad";
-  // PROD
-  // static readonly SUBSCRIPTIONKEY = "209fa70e5b0c4b5c8bddaf0aa54b8e19";
+
 };
