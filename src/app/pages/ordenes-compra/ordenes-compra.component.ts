@@ -523,7 +523,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   }
 
   getOrdenDetalle(element, guiaOrden?) {
-    if (!element) {
+    if (element) {
       if (!this.aux) {
         this.aux = true;
         this.queryDetallesDialog.p_pmg_po_number = element;
