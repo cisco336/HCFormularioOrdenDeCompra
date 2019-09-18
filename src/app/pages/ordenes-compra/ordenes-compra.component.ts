@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, throwError } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, skip } from 'rxjs/operators';
 import {
   MatDialogRef,
   MatDialog,
@@ -44,7 +44,6 @@ import * as moment from 'moment';
 import * as constants from '../../constants/constants';
 import { GenerateOrderGuideComponent } from 'src/app/components/generate-order-guide/generate-order-guide.component';
 import { DialogService } from 'src/app/services/dialog.service';
-import { skip, takeLast } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ordenes-compra',
