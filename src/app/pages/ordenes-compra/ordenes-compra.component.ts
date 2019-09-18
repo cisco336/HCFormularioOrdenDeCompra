@@ -44,6 +44,7 @@ import * as moment from 'moment';
 import * as constants from '../../constants/constants';
 import { GenerateOrderGuideComponent } from 'src/app/components/generate-order-guide/generate-order-guide.component';
 import { DialogService } from 'src/app/services/dialog.service';
+import { skip, takeLast } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ordenes-compra',
@@ -224,7 +225,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.routeSubscription = this._route.queryParams;
-    this.routeSubscription.subscribe(
+    this.routeSubscription.pipe(skip(1)).subscribe(
       params => {
         if (!params['token'] || !params['token'].split(';')[0]) {
           this.usr = '';
@@ -236,13 +237,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
           this._componentService.setUser(this.usr);
           this.appStart();
         }
-      },
-      error => {
-        this.isLoading = false;
-        this.noData = true;
-        this.errorMessage = `${
-          this.errorMessagesText.noPrivileges
-        }. ${error.statusText || error.status}`;
       }
     );
   }

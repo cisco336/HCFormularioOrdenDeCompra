@@ -17,7 +17,7 @@ export const tooltips = {
   tableFooterDblclick:
     'Haga DOBLE clic sobre cualquier otra parte de la fila para mostrar más información sobre la orden.',
   noGuideTooltip: 'El registro no posee guía.',
-  noLabelTooltip: 'El resitro no posee rotulo.',
+  noLabelTooltip: 'El resitro no posee rotulo.'
 };
 export const matFormFieldText = {};
 export const errorMessagesText = {
@@ -143,7 +143,7 @@ export const strings = {
   label: 'Rotulo',
   purchaceOrderState: 'Estado Orden de Compra',
   homologationState: 'Estado homologación',
-  createdBy: 'Creado por',
+  createdBy: 'Creado por'
 };
 
 export const detailsTable = {
@@ -188,19 +188,23 @@ export const longMessages = {
   generateOrderGuideTitle: 'Generación de guía para orden de compra',
   orderDetailTitle: 'Detalles de la orden de compra',
   tableClick: 'Haga clic sobre la fila para ver los detalles.',
-  packagesUpdateConfirm: '¿Está seguro de recalcular la configuración de los bultos?',
-  generateOrderGuideAlertFinal: '¿Está seguro de querer generar la guía para la orden de compra seleccionada?',
+  packagesUpdateConfirm:
+    '¿Está seguro de recalcular la configuración de los bultos?',
+  generateOrderGuideAlertFinal:
+    '¿Está seguro de querer generar la guía para la orden de compra seleccionada?',
   generateGuideSuccess: 'La guía se generó de forma exitosa.'
 };
 
 export class Constants {
   // DEV & QA
-  static readonly PATHROTULO = 'http://200.69.100.66/2IMPRESIONGUIASpruebas/ISticker_ZEA.aspx?';
+  static readonly PATHROTULO =
+    'http://200.69.100.66/2IMPRESIONGUIASpruebas/ISticker_ZEA.aspx?';
   // PROD
   // static readonly PATHROTULO = 'http://200.69.100.66/2IMPRESIONGUIAS/ISticker_ZEA2.aspx';
 
   // DEV
-  static readonly APIORDENDECOMPRA = 'http://10.23.14.164:9002/Servicios/ORDEN_COMPRA_1.0.0/api';
+  static readonly APIORDENDECOMPRA =
+    'http://10.23.14.164:9002/Servicios/ORDEN_COMPRA_1.0.0/api';
   // QA
   // static readonly APIORDENDECOMPRA = 'http://10.23.14.163:9002/Servicios/ORDEN_COMPRA_1.0.0/api';
   // PROD
@@ -216,17 +220,18 @@ export class Constants {
   // static readonly PASSWD = '51AAD9C1';
 
   // DEV & QA
-  static readonly GUIA = 'http://200.69.100.66/ServicioLiquidacionRESTpruebas/Service1.svc/Generacion';
+  static readonly GUIA =
+    'http://200.69.100.66/ServicioLiquidacionRESTpruebas/Service1.svc/Generacion';
   // PROD
   // static readonly GUIA = 'http://200.69.100.66/ServicioLiquidacionREST/Service1.svc/Generacion';
 
   // DEV
-  static readonly APIGUIA = 'http://10.23.14.164:9001/Servicios/Transportadora_1.0.0/api';
+  static readonly APIGUIA =
+    'http://10.23.14.164:9001/Servicios/Transportadora_1.0.0/api';
   // QA
   // static readonly APIGUIA = 'http://10.23.14.163:9001/Servicios/Transportadora_1.0.0/api';
   // PROD
   // static readonly APIGUIA = 'http://10.23.18.163:9001/Servicios/Transportadora_1.0.0/api';
   // Local
   // static readonly APIGUIA = 'http://localhost/Abastecimiento/Servicios/Transportadoras/api';
-
-};
+}
