@@ -31,6 +31,9 @@ body {
     &::-moz-scrollbar-thumb {
       background: $HC-primary;
     }
+    .click {
+      cursor: pointer;
+    }
   }
 }
 

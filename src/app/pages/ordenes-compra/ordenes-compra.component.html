@@ -14,7 +14,7 @@
       <span>{{ strings.provider }}:</span
       ><span [@child]="proveedor !== undefined">{{ proveedor }}</span>
     </h1>
-    <button mat-mini-fab color="accent">
+    <button mat-mini-fab color="accent" disabled>
       <mat-icon mat-list-icon>help_outline</mat-icon>
     </button>
   </div>
@@ -102,7 +102,7 @@
       <mat-icon
         matTooltip="{{ tooltips.mainFilterInfo }}"
         [matTooltipPosition]="'right'"
-        matTooltipClass="mat-elevation-z8 HC-tooltip-success"
+        matTooltipClass="mat-elevation-z8 HC-tooltip-success click"
         >info_outline</mat-icon
       >
     </div>
@@ -118,7 +118,7 @@
         <mat-icon
           matTooltip="{{ tooltips.optionsInfo }}"
           [matTooltipPosition]="'right'"
-          matTooltipClass="mat-elevation-z8 HC-tooltip-success"
+          matTooltipClass="mat-elevation-z8 HC-tooltip-success click"
           >info_outline</mat-icon
         >
       </h2>
@@ -149,7 +149,7 @@
         placeholder="{{ strings.filter }}"
         matTooltip="{{ tooltips.tableFilterInfo }}"
         [matTooltipPosition]="'above'"
-        matTooltipClass="mat-elevation-z8 HC-tooltip-success"
+        matTooltipClass="mat-elevation-z8 HC-tooltip-success click"
       />
       <mat-icon matSuffix>filter_list</mat-icon>
     </mat-form-field>
@@ -173,7 +173,7 @@
             [aria-label]="checkboxLabel()"
             matTooltip="{{ tooltips.checkBoxInfo }}"
             [matTooltipPosition]="'above'"
-            matTooltipClass="mat-elevation-z8 HC-tooltip-success"
+            matTooltipClass="mat-elevation-z8 HC-tooltip-success click"
           >
           </mat-checkbox>
         </th>
@@ -197,10 +197,11 @@
         <td
           mat-cell
           *matCellDef="let element"
-          class="position-label"
+          class="position-label click"
           (click)="
             expandedElement = expandedElement === element ? null : element
           "
+          (dblclick)="getOrdenDetalle(element.PMG_PO_NUMBER)"
           matRipple
           [matRippleColor]="primary"
         >
@@ -236,6 +237,7 @@
         <th mat-header-cell *matHeaderCellDef>{{ strings.actions }}</th>
         <td mat-cell *matCellDef="let element">
           <button
+            class="click"
             mat-icon-button
             color="primary"
             (click)="getOrdenDetalle(element.PMG_PO_NUMBER)"
@@ -243,6 +245,7 @@
             <mat-icon>assignment</mat-icon>
           </button>
           <button
+            class="click"
             mat-icon-button
             color="warn"
             (click)="getOrdenDetalle(element.PMG_PO_NUMBER, 1)"
@@ -294,8 +297,10 @@
                 <span mat-line>{{ strings.value }}:</span>
                 <span mat-line>
                   {{
-                    element.PMG_TOT_PO_COST | currency: 'COP':'symbol-narrow' || errorMessagesText.noData
-                      
+                    element.PMG_TOT_PO_COST
+                      | currency
+                        : 'COP'
+                        : 'symbol-narrow' || errorMessagesText.noData
                   }}
                 </span>
               </mat-list-item>
