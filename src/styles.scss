@@ -150,6 +150,13 @@ table {
   }
 }
 
+::ng-deep table {
+  & thead {
+    background: white;
+    z-index: 1000;
+  }
+}
+
 .mat-chip-list-wrapper {
   display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(100px, 100px));

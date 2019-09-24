@@ -145,6 +145,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'Select',
     'PMG_PO_NUMBER',
+    'AUX',
     // 'ESTADO',
     // 'FECHA_CREACION',
     // 'PMG_EXP_RCT_DATE',
@@ -185,6 +186,8 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   longMessages = constants.longMessages;
   errorMessage = '';
 
+  filterInput = new FormControl('', []);
+
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -224,20 +227,18 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.routeSubscription = this._route.queryParams;
-    this.routeSubscription.pipe(skip(1)).subscribe(
-      params => {
-        if (!params['token'] || !params['token'].split(';')[0]) {
-          this.usr = '';
-          this.isLoading = false;
-          this.errorMessage = this.errorMessagesText.noPrivileges;
-        } else {
-          this.errorMessage = '';
-          this.usr = params['token'].split(';')[0];
-          this._componentService.setUser(this.usr);
-          this.appStart();
-        }
+    this.routeSubscription.pipe(skip(1)).subscribe(params => {
+      if (!params['token'] || !params['token'].split(';')[0]) {
+        this.usr = '';
+        this.isLoading = false;
+        this.errorMessage = this.errorMessagesText.noPrivileges;
+      } else {
+        this.errorMessage = '';
+        this.usr = params['token'].split(';')[0];
+        this._componentService.setUser(this.usr);
+        this.appStart();
       }
-    );
+    });
   }
 
   appStart(key?) {
@@ -397,12 +398,12 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     this.fechaFinSubscription.unsubscribe();
     this.proveedoresControlSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-    // this.cambioEstadoSubscription.unsubscribe();
-    // this.detallesSubscription.unsubscribe();
-    // this.guiaSubscription.unsubscribe();
   }
 
   consultar() {
+    if (this.filterInput.value !== '') {
+      this.filterInput.setValue(null);
+    }
     this.isLoading = true;
     if (this.dataSource !== undefined) {
       this.dataSource.data = [];
@@ -420,7 +421,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       p_origen: '-1',
       p_usuario: this.usr
     };
-
     this._dataService
       .postTablaPrincipalOC(queryConsultar)
       .toPromise()
@@ -517,9 +517,14 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
 
   getOrdenDetalle(element, guiaOrden?) {
     if (element) {
+      this._componentService.setGeneraGuia(element.GENERA_GUIA);
       if (!this.aux) {
         this.aux = true;
-        this.queryDetallesDialog.p_pmg_po_number = element;
+        this.queryDetallesDialog.p_pmg_po_number = element.PMG_PO_NUMBER;
+        this._componentService.fechasOC.next({
+          FECHA_MAXIMA_OC: element.FECHA_MAXIMA_OC,
+          FECHA_MINIMA_OC: element.FECHA_MINIMA_OC
+        });
         this._dataService
           .postTablaPrincipalOC(this.queryDetallesDialog)
           .toPromise()
@@ -543,7 +548,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         const form = this.mainFilterForm;
         const queryTracking = {
           p_transaccion: 'TR',
-          p_pmg_po_number: element,
+          p_pmg_po_number: element.PMG_PO_NUMBER,
           p_prd_lvl_child: -1,
           p_vpc_tech_key: form.get('proveedorControl').value['ID'],
           p_fecha_inicio: form
@@ -562,7 +567,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
             this._componentService.setTracking(data);
           })
           .catch(() => {
-            // Controlar error TODO
+            // Controlar error TO/DO
           });
       }
     } else {
@@ -654,6 +659,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
 
   refreshData() {
     this.consultar();
-    this.applyFilter('');
+    this.filterInput.setValue(null);
   }
 }

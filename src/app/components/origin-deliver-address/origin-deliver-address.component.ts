@@ -26,6 +26,7 @@ export class OriginDeliverAddressComponent implements OnInit, OnDestroy {
   citiesSubscription: Subscription;
   TAG = 'DANESAPS';
   filteredOrigen: Observable<any>;
+  filteredDestino: Observable<any>;
   ciudades;
   destinos;
   transportadora;
@@ -39,7 +40,8 @@ export class OriginDeliverAddressComponent implements OnInit, OnDestroy {
   ) {
     this.addresses = _formBuilder.group({
       originAddress: ['', Validators.required],
-      originCity: ['', Validators.required]
+      originCity: ['', Validators.required],
+      destinyCity: ['']
     });
   }
 
@@ -70,6 +72,19 @@ export class OriginDeliverAddressComponent implements OnInit, OnDestroy {
                   ? this._filterOrigenes(descripcion)
                   : this.ciudades.slice()
               )
+          );
+          this.filteredDestino = this.addresses
+            .get('destinyCity')
+            .valueChanges.pipe(
+              startWith(''),
+              map(value =>
+                typeof value === 'string' ? value : value['DESCRIPCION']
+              ),
+              map(descripcion =>
+                descripcion
+                  ? this._filterOrigenes(descripcion)
+                  : this.ciudades.slice()
+              )
             );
           const data = this._componentService.getInfoBaseOC().value;
           this.transportadora = data['TRANSPORTADORA'];
@@ -87,13 +102,12 @@ export class OriginDeliverAddressComponent implements OnInit, OnDestroy {
           const destino = this.ciudades.filter(
             s => s.ID === response['CODIGO_DANE_DESTINO']
           );
-          this.ciudadDestino.nativeElement.value =
-            destino && destino[0] && destino[0]['DESCRIPCION']
-              ? destino[0]['DESCRIPCION']
-              : null;
+          this.addresses
+            .get('destinyCity')
+            .setValue(response['']);
           this.addresses
             .get('originAddress')
-            .setValue(response['DIRECCION_ORIGEN']);
+            .setValue(destino[0]);
           const origen =
             this.ciudades.filter(
               s => s.ID === response['CODIGO_DANE_ORIGEN']

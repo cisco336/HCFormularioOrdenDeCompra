@@ -52,7 +52,7 @@
           ><span>{{ element.PRD_NAME_FULL }}</span>
         </li>
         <li *ngIf="element.ESTADO" id="state">
-          <span>{{ strings.strings.state }}:</span
+          <span>{{ strings.strings.orderState }}:</span
           ><span
             [ngClass]="{
               info: element.ESTADO === 'EN TRANSPORTE',
@@ -63,10 +63,10 @@
             >{{ element.ESTADO }}</span
           >
         </li>
-        <li *ngIf="element.PMG_SHIP_DATE">
+        <!-- <li *ngIf="element.PMG_SHIP_DATE">
           <span>{{ strings.strings.creationDate }}</span
           ><span>{{ element.PMG_SHIP_DATE }}:</span>
-        </li>
+        </li> -->
         <li *ngIf="element.PMG_SHIP_DATE1">
           <span>{{ strings.strings.deliverDate }}</span
           ><span>{{ element.PMG_SHIP_DATE1 }}:</span>

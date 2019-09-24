@@ -73,13 +73,15 @@ export interface Proveedores {
   DESCRIPCION: string;
 }
 export interface TrackingObject {
-  DESCRIPCION_ESTADO_HO: string;
-  DESCRIPCION_ESTADO_OC: string;
-  FECHA_CREACION: string;
-  FECHA_INTEGRACION: string;
-  ID_ESTADO_HOMOLOGADO: number;
+  TIPO_TRACKING: string;
   ID_ESTADO_OC: number;
+  DESCRIPCION_ESTADO_OC: string;
+  FECHA_INTEGRACION: string;
+  FECHA_EVENTO: string;
+  ID_ESTADO_HOMOLOGADO: number;
+  DESCRIPCION_ESTADO_HO: string;
   USUARIO_CREACION: string;
+  FECHA_CREACION: string;
 }
 export interface InfoBaseOC {
   CEDULA: number;

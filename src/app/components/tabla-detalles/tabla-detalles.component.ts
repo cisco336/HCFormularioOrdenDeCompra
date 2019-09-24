@@ -41,7 +41,7 @@ export class TablaDetallesComponent implements OnInit, OnDestroy {
     strings.strings.sku,
     strings.strings.barCode,
     strings.strings.description,
-    strings.strings.state,
+    strings.strings.orderState,
     strings.strings.dispatchDate,
     strings.strings.deliverDate,
     strings.strings.editDate

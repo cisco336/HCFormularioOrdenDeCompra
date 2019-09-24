@@ -30,14 +30,14 @@
         >
           <mat-icon>category</mat-icon>{{ strings.strings.changeState }}
         </button>
-        <button mat-raised-button color="primary" matStepperNext>
+        <button *ngIf="genera_guia" mat-raised-button color="primary" matStepperNext>
           <mat-icon>navigate_next</mat-icon>{{ strings.strings.generateGuide }}
         </button>
       </div>
     </form>
   </mat-step>
 
-  <mat-step state="widgets" [completed]="stepTwo">
+  <mat-step *ngIf="genera_guia" state="widgets" [completed]="stepTwo">
     <form>
       <div class="step-container">
         <ng-template matStepLabel>{{ strings.strings.packConfig }}</ng-template>
@@ -58,7 +58,7 @@
     </form>
   </mat-step>
 
-  <mat-step state="location" [completed]="stepThree">
+  <mat-step *ngIf="genera_guia" state="location" [completed]="stepThree">
     <form>
       <div class="step-container">
         <ng-template matStepLabel>{{
@@ -83,7 +83,7 @@
     </form>
   </mat-step>
 
-  <mat-step state="shipping" [completed]="stepFour">
+  <mat-step *ngIf="genera_guia" state="shipping" [completed]="stepFour">
     <div class="step-container">
       <ng-template matStepLabel>{{
         strings.strings.confirmGuideGeneration

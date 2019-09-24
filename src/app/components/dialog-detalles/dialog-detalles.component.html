@@ -65,7 +65,7 @@
             <span>{{ strings.strings.city }}:</span
             ><span>{{ ciudad | titlecase }}</span>
           </li>
-          <li
+          <!-- <li
             *ngIf="
               infoBaseOC.TRANSPORTADORA && infoBaseOC.TRANSPORTADORA !== ''
             "
@@ -74,7 +74,7 @@
             ><span>
               {{ infoBaseOC.TRANSPORTADORA | titlecase }}
             </span>
-          </li>
+          </li> -->
         </ul>
       </div>
     </mat-card>
@@ -105,6 +105,14 @@
           <li *ngIf="infoBaseOC.NOTA_PEDIDO && infoBaseOC.NOTA_PEDIDO !== ''">
             <span>{{ strings.strings.orderNote }}:</span
             ><span>{{ infoBaseOC.NOTA_PEDIDO }}</span>
+          </li>
+          <li *ngIf="fechasOC.FECHA_MINIMA_OC">
+            <span>{{ strings.strings.minDeliverDate }}:</span
+            ><span>{{ fechasOC.FECHA_MINIMA_OC }}</span>
+          </li>
+          <li *ngIf="fechasOC.FECHA_MAXIMA_OC">
+            <span>{{ strings.strings.maxDeliverDate }}:</span
+            ><span>{{ fechasOC.FECHA_MAXIMA_OC }}</span>
           </li>
         </ul>
       </div>

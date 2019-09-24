@@ -98,6 +98,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   finalMessg: string;
   stepThreeMessg = '';
   isLoading = false;
+  genera_guia: boolean;
   queryRotulo;
   guideQuery: any;
 
@@ -110,6 +111,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this._componentService.generaGuia.subscribe(change => this.genera_guia = change);
     this._componentService.aux.subscribe(val => (this.stepOne = val));
     this.finalMessg = strings.longMessages.generateOrderGuideAlertFinal;
     this.stepOne = false;
@@ -285,8 +287,10 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
       CodigoInterno: x.getInfoBaseOC().value['PMG_PO_NUMBER'],
       IdBulto: x.getIdBulto().value,
       Sku: x.getClearSkus().value,
-      Direccion: x.getDireccionOrigen().value.direccion || null,
-      CodDane: x.getDireccionOrigen().value.ciudad ? x.getDireccionOrigen().value.ciudad['ID'] : null,
+      DireccionOrigen: x.getDireccionOrigen().value.direccion || null,
+      // CodDaneOrigen: x.getDireccionOrigen().value.ciudad ? x.getDireccionOrigen().value.ciudad['ID'] : null,
+      DireccionDestino: x.direccionDestino.value.direccion || null,
+      // CodDaneDestino: x.direccionDestino.value.ciudad ? x.direccionDestino.value.ciudad['ID'] : null,
       info_cubicacion: x.getMagnitudes().value
     };
     this._dataService

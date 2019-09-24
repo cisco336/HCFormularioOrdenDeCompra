@@ -17,7 +17,9 @@ export const tooltips = {
   tableFooterDblclick:
     'Haga DOBLE clic sobre cualquier otra parte de la fila para mostrar más información sobre la orden.',
   noGuideTooltip: 'El registro no posee guía.',
-  noLabelTooltip: 'El resitro no posee rotulo.'
+  noLabelTooltip: 'El resitro no posee rotulo.',
+  purchaseOrderDetailToolTip: 'Mostrar el detalle de la orden de compra',
+  purchaseOrderGuideTooltip: 'Generar la guía para la orden de compra',
 };
 export const matFormFieldText = {};
 export const errorMessagesText = {
@@ -36,7 +38,8 @@ export const errorMessagesText = {
   providersError: 'Error al obtener los proveedores.',
   noGuide: 'Sin guía',
   errorGeneratingGuide: 'Ocurrió un error al intentar generar la guía.',
-  citiesError: 'Error al intentar obtener ciudades.'
+  citiesError: 'Error al intentar obtener ciudades.',
+  timeError: 'Hora incorrecta.'
 };
 export const successMessagesText = {
   querySuccess: 'La solicitud se ejecutó de forma exitosa.'
@@ -61,6 +64,7 @@ export const strings = {
   deliverType: 'Tipo de entrega',
   realDeliverDate: 'Fecha real de entrega',
   realEventDate: 'Fecha real cambio de estado',
+  eventDate: 'Fecha evento',
   startDate: 'Fecha incio',
   endDate: 'Fecha fin',
   editDate: 'Fecha modificación',
@@ -72,6 +76,7 @@ export const strings = {
   filter: 'Filtro',
   order: 'Orden',
   orderState: 'Estado orden',
+  orderStateInvoice: 'Estado orden facturación',
   dispatchDate: 'Fecha despacho',
   deliverStore: 'Almacen a entregar',
   value: 'Valor',
@@ -142,32 +147,45 @@ export const strings = {
   no: 'No',
   label: 'Rotulo',
   purchaceOrderState: 'Estado Orden de Compra',
-  homologationState: 'Estado homologación',
-  createdBy: 'Creado por'
+  homologationState: 'Estado homologacion',
+  createdBy: 'Creado por',
+  flow: 'Flujo',
+  trackingType: 'Tipo tracking',
+  date: 'Fecha',
+  user: 'Usuario',
+  idOC: 'ID estado OC',
+  descStateOC: 'Desc. estado OC',
+  idStateHo: 'ID estado homologacion',
+  descStateHM: 'Desc. estado HO',
+  creation: 'Creación',
+  id: 'ID',
+  desc: 'Desc.',
+  minDeliverDate: 'Fecha minima de entrega',
+  maxDeliverDate: 'Fecha máxima de entrega',
 };
 
 export const detailsTable = {
   FECHA_REAL_EVENTO: strings.realEventDate,
-  FECHA_CREACION: strings.creationDate,
+  FECHA_CREACION: null, // strings.creationDate,
   NAME_FAMILIA: strings.family,
-  ORG_NAME_FULL: strings.locality,
-  ORIGEN_DESC: strings.origin,
+  ORG_NAME_FULL: null, // strings.locality,
+  ORIGEN_DESC: null, // strings.origin,
   PMG_CANCEL_DATE: strings.cancelationDate,
-  PMG_EXP_RCT_DATE: strings.spectedDeliverDate,
+  PMG_EXP_RCT_DATE: null, // strings.spectedDeliverDate,
   PMG_SELL_COST: strings.cost,
   PMG_SELL_QTY: strings.quantity,
-  PMG_STAT_NAME: strings.orderState,
-  USR_CREACION: strings.creationUser,
-  PRD_NAME_FULL: strings.description,
+  PMG_STAT_NAME: strings.orderStateInvoice,
+  USR_CREACION: null, // strings.creationUser,
+  PRD_NAME_FULL: null, // strings.description,
   FECHA_MODIFICACION: strings.editDate,
   USR_MODIFICACION: strings.editUser,
   PRD_LVL_NUMBER: strings.sku,
   PRD_UPC: strings.barCode,
-  ESTADO: strings.state,
-  PMG_SHIP_DATE: strings.dispatchDate,
+  ESTADO: null, // strings.orderState,
+  PMG_SHIP_DATE: null, // strings.dispatchDate,
   PMG_SHIP_DATE1: strings.deliverDate,
   FECHA_GENERAION_GUIA: strings.dateGuideGeneration,
-  URL_GUIA: strings.guide,
+  URL_GUIA: null, // strings.guide,
   PMG_TOT_DTL_COST: null,
   ID_ESTADO: null,
   PMG_RETAIL: null,
@@ -207,7 +225,7 @@ export class Constants {
     'http://10.23.14.164:9002/Servicios/ORDEN_COMPRA_1.0.0/api';
   // QA
   // static readonly APIORDENDECOMPRA = 'http://10.23.14.163:9002/Servicios/ORDEN_COMPRA_1.0.0/api';
-  // PROD
+  // // PROD
   // static readonly APIORDENDECOMPRA = 'http://10.23.18.163:9002/Servicios/ORDEN_COMPRA_1.0.0/api';
 
   // DEV & QA

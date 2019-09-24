@@ -96,6 +96,7 @@ export class DialogDetallesComponent implements OnInit, OnDestroy {
   ciudad;
   direccionDestino;
   error: string;
+  fechasOC;
 
   constructor(
     public dialogRef: MatDialogRef<DialogDetallesComponent>,
@@ -105,6 +106,7 @@ export class DialogDetallesComponent implements OnInit, OnDestroy {
     private _bottomSheet: MatBottomSheet
   ) {}
   ngOnInit() {
+    this.fechasOC = this._componentService.fechasOC.value;
     this._componentService.setCloseDialog(false);
     this._componentService.setSteps({
       two: false,
