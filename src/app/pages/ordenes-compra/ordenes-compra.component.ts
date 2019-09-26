@@ -145,6 +145,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'Select',
     'PMG_PO_NUMBER',
+    'AUX',
     // 'ESTADO',
     // 'FECHA_CREACION',
     // 'PMG_EXP_RCT_DATE',
@@ -185,12 +186,13 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   longMessages = constants.longMessages;
   errorMessage = '';
 
+  filterInput = new FormControl('', []);
+
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
     this.screenWidth = window.innerWidth;
   }
-
   constructor(
     public _dialog: MatDialog,
     _formBuilder: FormBuilder,
@@ -213,33 +215,28 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     });
     this.onResize();
   }
-
   exportXlsx() {
     this._excelExport.exportAsExcelFile(
       this.dataSource.data,
       'Ordenes_de_compra_' + this.proveedor
     );
   }
-
   ngOnInit() {
     this.isLoading = true;
     this.routeSubscription = this._route.queryParams;
-    this.routeSubscription.pipe(skip(1)).subscribe(
-      params => {
-        if (!params['token'] || !params['token'].split(';')[0]) {
-          this.usr = '';
-          this.isLoading = false;
-          this.errorMessage = this.errorMessagesText.noPrivileges;
-        } else {
-          this.errorMessage = '';
-          this.usr = params['token'].split(';')[0];
-          this._componentService.setUser(this.usr);
-          this.appStart();
-        }
+    this.routeSubscription.pipe(skip(1)).subscribe(params => {
+      if (!params['token'] || !params['token'].split(';')[0]) {
+        this.usr = '';
+        this.isLoading = false;
+        this.errorMessage = this.errorMessagesText.noPrivileges;
+      } else {
+        this.errorMessage = '';
+        this.usr = params['token'].split(';')[0];
+        this._componentService.setUser(this.usr);
+        this.appStart();
       }
-    );
+    });
   }
-
   appStart(key?) {
     this.isLoading = true;
     this._dataService
@@ -364,7 +361,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         }
       );
   }
-
   errorHandling(error) {
     let toastrError;
     switch (error.status) {
@@ -391,18 +387,16 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     this.noData = true;
     this.isLoading = false;
   }
-
   ngOnDestroy() {
     this.fechaInicioSubscription.unsubscribe();
     this.fechaFinSubscription.unsubscribe();
     this.proveedoresControlSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-    // this.cambioEstadoSubscription.unsubscribe();
-    // this.detallesSubscription.unsubscribe();
-    // this.guiaSubscription.unsubscribe();
   }
-
   consultar() {
+    if (this.filterInput.value !== '') {
+      this.filterInput.setValue(null);
+    }
     this.isLoading = true;
     if (this.dataSource !== undefined) {
       this.dataSource.data = [];
@@ -420,7 +414,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       p_origen: '-1',
       p_usuario: this.usr
     };
-
     this._dataService
       .postTablaPrincipalOC(queryConsultar)
       .toPromise()
@@ -445,7 +438,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         }
       );
   }
-
   compareDates() {
     const form = this.mainFilterForm;
     if (
@@ -465,19 +457,16 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.data.forEach(row => this.selection.select(row));
   }
-
   checkboxLabel(row?: OrdenDeCompra): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
@@ -486,19 +475,15 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       'Orden'
     ] + 1}`;
   }
-
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
   displayProveedor(data?: Proveedores): string | undefined {
     return data ? data.DESCRIPCION : undefined;
   }
-
   displayEstados(data?: Estado): string | undefined {
     return data ? data.DESCRIPCION : undefined;
   }
-
   private _filterProveedor(DESCRIPCION: string): Proveedores[] {
     const filterValue = DESCRIPCION.toLowerCase();
 
@@ -506,7 +491,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       option => option.DESCRIPCION.toLowerCase().indexOf(filterValue) >= 0
     );
   }
-
   private _filterEstados(DESCRIPCION: string): Estado[] {
     const filterValue = DESCRIPCION.toLowerCase();
 
@@ -514,12 +498,16 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       option => option.DESCRIPCION.toLowerCase().indexOf(filterValue) >= 0
     );
   }
-
   getOrdenDetalle(element, guiaOrden?) {
     if (element) {
+      this._componentService.setGeneraGuia(element.GENERA_GUIA);
       if (!this.aux) {
         this.aux = true;
-        this.queryDetallesDialog.p_pmg_po_number = element;
+        this.queryDetallesDialog.p_pmg_po_number = element.PMG_PO_NUMBER;
+        this._componentService.fechasOC.next({
+          FECHA_MAXIMA_OC: element.FECHA_MAXIMA_OC,
+          FECHA_MINIMA_OC: element.FECHA_MINIMA_OC
+        });
         this._dataService
           .postTablaPrincipalOC(this.queryDetallesDialog)
           .toPromise()
@@ -543,7 +531,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         const form = this.mainFilterForm;
         const queryTracking = {
           p_transaccion: 'TR',
-          p_pmg_po_number: element,
+          p_pmg_po_number: element.PMG_PO_NUMBER,
           p_prd_lvl_child: -1,
           p_vpc_tech_key: form.get('proveedorControl').value['ID'],
           p_fecha_inicio: form
@@ -562,7 +550,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
             this._componentService.setTracking(data);
           })
           .catch(() => {
-            // Controlar error TODO
+            this._toastr.error(this.errorMessagesText.trackingError);
           });
       }
     } else {
@@ -651,9 +639,8 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         error => this._toastr.error(error)
       );
   }
-
   refreshData() {
     this.consultar();
-    this.applyFilter('');
+    this.filterInput.reset();
   }
 }

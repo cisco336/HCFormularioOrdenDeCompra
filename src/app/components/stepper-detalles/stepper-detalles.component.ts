@@ -98,6 +98,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   finalMessg: string;
   stepThreeMessg = '';
   isLoading = false;
+  genera_guia: boolean;
   queryRotulo;
   guideQuery: any;
 
@@ -110,6 +111,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this._componentService.generaGuia.subscribe(change => this.genera_guia = change);
     this._componentService.aux.subscribe(val => (this.stepOne = val));
     this.finalMessg = strings.longMessages.generateOrderGuideAlertFinal;
     this.stepOne = false;
@@ -281,13 +283,13 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   buildBody(stepper: MatStepper) {
     const x = this._componentService;
     const query = {
-      Transportadora: x.getInfoBaseOC().value['TRANSPORTADORA'],
-      CodigoInterno: x.getInfoBaseOC().value['PMG_PO_NUMBER'],
-      IdBulto: x.getIdBulto().value,
-      Sku: x.getClearSkus().value,
-      Direccion: x.getDireccionOrigen().value.direccion || null,
-      CodDane: x.getDireccionOrigen().value.ciudad ? x.getDireccionOrigen().value.ciudad['ID'] : null,
-      info_cubicacion: x.getMagnitudes().value
+      Transportadora: x.infoBaseOC.value.TRANSPORTADORA,
+      CodigoInterno: x.infoBaseOC.value.PMG_PO_NUMBER,
+      IdBulto: x.idBulto.value,
+      Sku: x.clearSkus.value,
+      DireccionOrigen: x.direccionOrigen.value.direccion || null,
+      DireccionDestino: x.direccionDestino.value.direccion || null,
+      info_cubicacion: x.magnitudes.value
     };
     this._dataService
       .PostInfoGuia(query)
@@ -353,7 +355,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
         this._dataService
           .SetDatosGuia(this.queryRotulo)
           .toPromise()
-          .then(guideQueryResponse => {
+          .then(() => {
             this.isLoading = false;
             this.finalMessg = strings.longMessages.generateGuideSuccess;
             this._componentService.setCloseDialog(true);

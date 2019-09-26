@@ -8,10 +8,10 @@
 </mat-toolbar>
 
 <div class="the-wrapper" mat-dialog-content>
+  <div *ngIf="error !== ''">
+    {{ error }}
+  </div>
   <div [@cardGroup]="ordenCompra !== null ? true : false" class="card-wrapper">
-    <div *ngIf="error === ''">
-      {{ error }}
-    </div>
     <mat-card *ngIf="cliente" class="card-first mat-elevation-z10">
       <div class="card-title">
         <mat-icon>person</mat-icon>
@@ -65,7 +65,7 @@
             <span>{{ strings.strings.city }}:</span
             ><span>{{ ciudad | titlecase }}</span>
           </li>
-          <li
+          <!-- <li
             *ngIf="
               infoBaseOC.TRANSPORTADORA && infoBaseOC.TRANSPORTADORA !== ''
             "
@@ -74,7 +74,7 @@
             ><span>
               {{ infoBaseOC.TRANSPORTADORA | titlecase }}
             </span>
-          </li>
+          </li> -->
         </ul>
       </div>
     </mat-card>
@@ -106,11 +106,19 @@
             <span>{{ strings.strings.orderNote }}:</span
             ><span>{{ infoBaseOC.NOTA_PEDIDO }}</span>
           </li>
+          <li *ngIf="fechasOC.FECHA_MINIMA_OC">
+            <span>{{ strings.strings.minDeliverDate }}:</span
+            ><span>{{ fechasOC.FECHA_MINIMA_OC }}</span>
+          </li>
+          <li *ngIf="fechasOC.FECHA_MAXIMA_OC">
+            <span>{{ strings.strings.maxDeliverDate }}:</span
+            ><span>{{ fechasOC.FECHA_MAXIMA_OC }}</span>
+          </li>
         </ul>
       </div>
     </mat-card>
 
-    <mat-card
+    <!-- <mat-card
       class="card-fourth mat-elevation-z10"
       *ngIf="ordenCompra['observaciones']"
     >
@@ -124,7 +132,7 @@
             strings.errorMessagesText.noObservations
         }}
       </div>
-    </mat-card>
+    </mat-card> -->
   </div>
 
   <mat-tab-group dynamicHeight mat-stretch-tabs>

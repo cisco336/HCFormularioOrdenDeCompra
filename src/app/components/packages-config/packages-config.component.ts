@@ -69,7 +69,7 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
       });
     });
     this.displayedColumns = [
-      'ID_BULTO',
+      // 'ID_BULTO',
       'BULTOS',
       'CANTIDAD',
       'LARGO',

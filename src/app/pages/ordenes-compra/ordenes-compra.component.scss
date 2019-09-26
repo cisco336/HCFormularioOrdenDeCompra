@@ -156,7 +156,9 @@
               }
               &:hover {
                 background: $HC-primary;
-                color: $HC-white;
+                &, & span:nth-child(2) {
+                  color: $HC-white;
+                }
               }
             }
           }

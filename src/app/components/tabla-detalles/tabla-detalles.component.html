@@ -52,7 +52,7 @@
           ><span>{{ element.PRD_NAME_FULL }}</span>
         </li>
         <li *ngIf="element.ESTADO" id="state">
-          <span>{{ strings.strings.state }}:</span
+          <span>{{ strings.strings.orderState }}:</span
           ><span
             [ngClass]="{
               info: element.ESTADO === 'EN TRANSPORTE',
@@ -63,10 +63,10 @@
             >{{ element.ESTADO }}</span
           >
         </li>
-        <li *ngIf="element.PMG_SHIP_DATE">
+        <!-- <li *ngIf="element.PMG_SHIP_DATE">
           <span>{{ strings.strings.creationDate }}</span
           ><span>{{ element.PMG_SHIP_DATE }}:</span>
-        </li>
+        </li> -->
         <li *ngIf="element.PMG_SHIP_DATE1">
           <span>{{ strings.strings.deliverDate }}</span
           ><span>{{ element.PMG_SHIP_DATE1 }}:</span>
@@ -125,20 +125,20 @@
         <mat-list>
           <mat-list-item *ngFor="let x of jsonToBeUsed">
             <span *ngIf="x.key !== strings.strings.realEventDate">
-              <span mat-line> {{ x.key }}: </span>
-              <span mat-line *ngIf="isNumber(x.value, x.key)">
+              <span mat-line class="break" > {{ x.key }}: </span>
+              <span mat-line class="break"  *ngIf="isNumber(x.value, x.key)">
                 {{ x.value }}
               </span>
-              <span mat-line *ngIf="!isNumber(x.value)">
+              <span mat-line class="break"  *ngIf="!isNumber(x.value)">
                 {{ x.value | titlecase }}
               </span>
-              <span mat-line *ngIf="isCost(x.key)">
+              <span mat-line class="break"  *ngIf="isCost(x.key)">
                 {{ x.value | currency: 'COP':'symbol-narrow' }}
               </span>
             </span>
             <span *ngIf="x.key === strings.strings.realEventDate">
-              <span mat-line> {{ x.key }}: </span>
-              <span mat-line>
+              <span mat-line class="break" > {{ x.key }}: </span>
+              <span mat-line class="break" >
                 {{ x.value | date }}
               </span>
             </span>
