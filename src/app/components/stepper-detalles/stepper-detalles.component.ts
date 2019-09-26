@@ -283,15 +283,13 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   buildBody(stepper: MatStepper) {
     const x = this._componentService;
     const query = {
-      Transportadora: x.getInfoBaseOC().value['TRANSPORTADORA'],
-      CodigoInterno: x.getInfoBaseOC().value['PMG_PO_NUMBER'],
-      IdBulto: x.getIdBulto().value,
-      Sku: x.getClearSkus().value,
-      DireccionOrigen: x.getDireccionOrigen().value.direccion || null,
-      // CodDaneOrigen: x.getDireccionOrigen().value.ciudad ? x.getDireccionOrigen().value.ciudad['ID'] : null,
+      Transportadora: x.infoBaseOC.value.TRANSPORTADORA,
+      CodigoInterno: x.infoBaseOC.value.PMG_PO_NUMBER,
+      IdBulto: x.idBulto.value,
+      Sku: x.clearSkus.value,
+      DireccionOrigen: x.direccionOrigen.value.direccion || null,
       DireccionDestino: x.direccionDestino.value.direccion || null,
-      // CodDaneDestino: x.direccionDestino.value.ciudad ? x.direccionDestino.value.ciudad['ID'] : null,
-      info_cubicacion: x.getMagnitudes().value
+      info_cubicacion: x.magnitudes.value
     };
     this._dataService
       .PostInfoGuia(query)
@@ -357,7 +355,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
         this._dataService
           .SetDatosGuia(this.queryRotulo)
           .toPromise()
-          .then(guideQueryResponse => {
+          .then(() => {
             this.isLoading = false;
             this.finalMessg = strings.longMessages.generateGuideSuccess;
             this._componentService.setCloseDialog(true);

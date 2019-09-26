@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TrackingObject } from '../../interfaces/interfaces';
 import { ComponentsService } from 'src/app/services/components.service';
 import * as strings from '../../constants/constants';
-import { debug } from 'util';
 import { MatTableDataSource } from '@angular/material';
 
 @Component({
@@ -18,13 +17,10 @@ export class TrackingComponent implements OnInit {
   displayedColumns: string[] = [
     'TIPO_TRACKING',
     'ID_ESTADO_OC',
-    // 'DESCRIPCION_ESTADO_OC',
     'FECHA_INTEGRACION',
     'FECHA_EVENTO',
     'ID_ESTADO_HOMOLOGADO',
-    // 'DESCRIPCION_ESTADO_HO',
     'USUARIO_CREACION',
-    // 'FECHA_CREACION'
   ];
 
   constructor(private _componentService: ComponentsService) {}

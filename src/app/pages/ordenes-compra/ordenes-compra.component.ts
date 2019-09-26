@@ -193,7 +193,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     this.screenHeight = window.innerHeight;
     this.screenWidth = window.innerWidth;
   }
-
   constructor(
     public _dialog: MatDialog,
     _formBuilder: FormBuilder,
@@ -216,14 +215,12 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     });
     this.onResize();
   }
-
   exportXlsx() {
     this._excelExport.exportAsExcelFile(
       this.dataSource.data,
       'Ordenes_de_compra_' + this.proveedor
     );
   }
-
   ngOnInit() {
     this.isLoading = true;
     this.routeSubscription = this._route.queryParams;
@@ -240,7 +237,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   appStart(key?) {
     this.isLoading = true;
     this._dataService
@@ -365,7 +361,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         }
       );
   }
-
   errorHandling(error) {
     let toastrError;
     switch (error.status) {
@@ -392,14 +387,12 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     this.noData = true;
     this.isLoading = false;
   }
-
   ngOnDestroy() {
     this.fechaInicioSubscription.unsubscribe();
     this.fechaFinSubscription.unsubscribe();
     this.proveedoresControlSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
   }
-
   consultar() {
     if (this.filterInput.value !== '') {
       this.filterInput.setValue(null);
@@ -445,7 +438,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         }
       );
   }
-
   compareDates() {
     const form = this.mainFilterForm;
     if (
@@ -465,19 +457,16 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.data.forEach(row => this.selection.select(row));
   }
-
   checkboxLabel(row?: OrdenDeCompra): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
@@ -486,19 +475,15 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       'Orden'
     ] + 1}`;
   }
-
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
   displayProveedor(data?: Proveedores): string | undefined {
     return data ? data.DESCRIPCION : undefined;
   }
-
   displayEstados(data?: Estado): string | undefined {
     return data ? data.DESCRIPCION : undefined;
   }
-
   private _filterProveedor(DESCRIPCION: string): Proveedores[] {
     const filterValue = DESCRIPCION.toLowerCase();
 
@@ -506,7 +491,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       option => option.DESCRIPCION.toLowerCase().indexOf(filterValue) >= 0
     );
   }
-
   private _filterEstados(DESCRIPCION: string): Estado[] {
     const filterValue = DESCRIPCION.toLowerCase();
 
@@ -514,7 +498,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       option => option.DESCRIPCION.toLowerCase().indexOf(filterValue) >= 0
     );
   }
-
   getOrdenDetalle(element, guiaOrden?) {
     if (element) {
       this._componentService.setGeneraGuia(element.GENERA_GUIA);
@@ -567,7 +550,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
             this._componentService.setTracking(data);
           })
           .catch(() => {
-            // Controlar error TO/DO
+            this._toastr.error(this.errorMessagesText.trackingError);
           });
       }
     } else {
@@ -656,9 +639,8 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         error => this._toastr.error(error)
       );
   }
-
   refreshData() {
     this.consultar();
-    this.filterInput.setValue(null);
+    this.filterInput.reset();
   }
 }

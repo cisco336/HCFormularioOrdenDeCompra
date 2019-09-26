@@ -5,13 +5,13 @@
     </div>
     <mat-card-content>
       <mat-form-field>
-        <textarea
+        <input
           matInput
           aria-label="strings.provider"
           placeholder="{{ strings.strings.address }}"
           formControlName="originAddress"
           #direccionOrigen
-        ></textarea>
+        />
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <input
@@ -45,12 +45,13 @@
     </div>
     <mat-card-content>
       <mat-form-field>
-        <textarea
+        <input
           placeholder="{{ strings.strings.address }}"
           aria-label="strings.provider"
           matInput
+          formControlName="destinyAddress"
           #direccionDestino
-        ></textarea>
+        />
       </mat-form-field>
       <mat-form-field class="example-full-width">
           <input

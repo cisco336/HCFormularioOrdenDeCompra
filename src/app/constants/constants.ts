@@ -17,7 +17,7 @@ export const tooltips = {
   tableFooterDblclick:
     'Haga DOBLE clic sobre cualquier otra parte de la fila para mostrar más información sobre la orden.',
   noGuideTooltip: 'El registro no posee guía.',
-  noLabelTooltip: 'El resitro no posee rotulo.',
+  noLabelTooltip: 'El regitro no posee rotulo.',
   purchaseOrderDetailToolTip: 'Mostrar el detalle de la orden de compra',
   purchaseOrderGuideTooltip: 'Generar la guía para la orden de compra',
 };
@@ -39,7 +39,9 @@ export const errorMessagesText = {
   noGuide: 'Sin guía',
   errorGeneratingGuide: 'Ocurrió un error al intentar generar la guía.',
   citiesError: 'Error al intentar obtener ciudades.',
-  timeError: 'Hora incorrecta.'
+  timeError: 'Hora incorrecta.',
+  guideUnabled: 'Esta orden no puede generar guía',
+  trackingError: 'Error al obtener la información de tracking',
 };
 export const successMessagesText = {
   querySuccess: 'La solicitud se ejecutó de forma exitosa.'
