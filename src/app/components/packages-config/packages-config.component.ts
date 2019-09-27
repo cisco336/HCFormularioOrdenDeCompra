@@ -71,7 +71,7 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
     this.displayedColumns = [
       // 'ID_BULTO',
       'BULTOS',
-      'CANTIDAD',
+      // 'CANTIDAD',
       'LARGO',
       'ANCHO',
       'ALTO',

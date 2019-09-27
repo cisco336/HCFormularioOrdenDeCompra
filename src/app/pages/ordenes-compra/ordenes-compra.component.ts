@@ -504,6 +504,17 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       if (!this.aux) {
         this.aux = true;
         this.queryDetallesDialog.p_pmg_po_number = element.PMG_PO_NUMBER;
+        this._dataService.GetInfoBaseOc(element.PMG_PO_NUMBER).toPromise().then(data => {
+          this._componentService.detalleOC.next(data['Value'][0]);
+          this._componentService.setDireccionDestino({
+            direccion: data['Value'][0].DIRECCION_ENTREGA,
+            ciudad: data['Value'][0].CODIGO_DANE_DESTINO
+          });
+          this._componentService.setDireccionOrigen({
+            direccion: data['Value'][0].DIRECCION_ORIGEN,
+            ciudad: data['Value'][0].CODIGO_DANE_ORIGEN
+          });
+        });
         this._componentService.fechasOC.next({
           FECHA_MAXIMA_OC: element.FECHA_MAXIMA_OC,
           FECHA_MINIMA_OC: element.FECHA_MINIMA_OC

@@ -60,7 +60,9 @@ export class GenerateOrderGuideComponent implements OnInit, OnDestroy {
     this._dataService
       .GetInfoBaseOc(this.oc)
       .toPromise()
-      .then(data => this._componentService.setInfoBaseOC(data['Value'][0]));
+      .then(data => {
+        this._componentService.setInfoBaseOC(data['Value'][0]);
+      });
     this.skus = this.data.data.ordenCompra.map(
       number =>
         (number = {

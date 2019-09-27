@@ -330,7 +330,9 @@
               </mat-list-item> -->
               <mat-list-item>
                 <mat-icon mat-list-icon>today</mat-icon>
-                <span mat-line class="break">{{ strings.realDeliverDate }}:</span>
+                <span mat-line class="break"
+                  >{{ strings.realDeliverDate }}:</span
+                >
                 <span mat-line class="break">
                   {{ element['FECHA_REAL_ENTREGA'] | date: 'medium' }}
                 </span>
@@ -378,13 +380,20 @@
                 </span>
               </mat-list-item>
               <mat-list-item>
-                <mat-icon mat-list-icon>local_shipping</mat-icon>
-                <span mat-line class="break"
-                  >{{ strings.operator }} ({{ strings.conveyor }}):</span
-                >
+                <mat-icon mat-list-icon>store</mat-icon>
+                <span mat-line class="break">{{ strings.provider }}:</span>
                 <span mat-line class="break">
                   {{
                     element.VENDOR_NAME || errorMessagesText.noData | titlecase
+                  }}
+                </span>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon mat-list-icon>local_shipping</mat-icon>
+                <span mat-line class="break">{{ strings.conveyor | titlecase }}:</span>
+                <span mat-line class="break">
+                  {{
+                    element.TRANSPORTADORA || errorMessagesText.noData | titlecase
                   }}
                 </span>
               </mat-list-item>
