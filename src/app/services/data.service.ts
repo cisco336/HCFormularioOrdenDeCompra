@@ -64,7 +64,7 @@ export class DataService {
   }
 
   GetInfoBaseOc(data) {
-    return this.http.get(Constants.APIORDENDECOMPRA + this.getInfoBaseOcCall + data, {
+    return this.http.post(Constants.APIORDENDECOMPRA + this.postTablaPrincipalOCCall, data, {
       headers: this.generateBasicHeadersJWT()
     });
   }

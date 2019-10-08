@@ -202,7 +202,7 @@
           (click)="
             expandedElement = expandedElement === element ? null : element
           "
-          (dblclick)="getOrdenDetalle(element.PMG_PO_NUMBER)"
+          (dblclick)="getOrdenDetalle(element)"
           matRipple
           [matRippleColor]="primary"
         >
@@ -242,7 +242,7 @@
           (click)="
             expandedElement = expandedElement === element ? null : element
           "
-          (dblclick)="getOrdenDetalle(element.PMG_PO_NUMBER)"
+          (dblclick)="getOrdenDetalle(element)"
           matRipple
           [matRippleColor]="primary"
         >
@@ -330,9 +330,23 @@
               </mat-list-item> -->
               <mat-list-item>
                 <mat-icon mat-list-icon>today</mat-icon>
+                <span mat-line class="break">{{ strings.orderDate }}:</span>
+                <span mat-line class="break">
+                  {{ element['PMG_RELEASE_DATE'] | date: 'medium' }}
+                </span>
+              </mat-list-item>              
+              <mat-list-item>
+                <mat-icon mat-list-icon>today</mat-icon>
                 <span mat-line class="break">{{ strings.realDeliverDate }}:</span>
                 <span mat-line class="break">
                   {{ element['FECHA_REAL_ENTREGA'] | date: 'medium' }}
+                </span>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon mat-list-icon>language</mat-icon>
+                <span mat-line class="break">{{ strings.red }}:</span>
+                <span mat-line class="break">
+                  {{ element['RED'] }}
                 </span>
               </mat-list-item>
               <mat-list-item>
@@ -380,12 +394,19 @@
               <mat-list-item>
                 <mat-icon mat-list-icon>local_shipping</mat-icon>
                 <span mat-line class="break"
-                  >{{ strings.operator }} ({{ strings.conveyor }}):</span
+                  >{{ strings.operator }} ({{ strings.conveyor }}):</span 
                 >
                 <span mat-line class="break">
                   {{
-                    element.VENDOR_NAME || errorMessagesText.noData | titlecase
+                    element.TRANSPORTADORA || errorMessagesText.noData | titlecase
                   }}
+                </span>
+              </mat-list-item>
+              <mat-list-item>
+                <mat-icon mat-list-icon>pan_tool</mat-icon>
+                <span mat-line class="break">{{ strings.promise }}:</span>
+                <span mat-line class="break">
+                  {{ element['PROMESA'] }}
                 </span>
               </mat-list-item>
               <!-- <mat-list-item>
@@ -426,10 +447,10 @@
     </table>
 
     <mat-paginator
-      *ngIf="dataSource.data.length > 0"
-      [pageSizeOptions]="[5, 10, 20, 50, 100]"
-      showFirstLastButtons
-    ></mat-paginator>
+        *ngIf="dataSource.data.length > 0"
+        [pageSizeOptions]="[5, 10, 20, 50, 100]"
+        showFirstLastButtons
+      ></mat-paginator>
     <div
       class="table-message"
       [@entering]="tableMessage !== ''"
