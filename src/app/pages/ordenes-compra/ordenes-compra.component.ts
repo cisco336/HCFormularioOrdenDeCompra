@@ -559,6 +559,11 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
           .toPromise()
           .then(data => {
             this._componentService.setTracking(data);
+            if (data["Value"][0]["Código"] === "4") {
+              this._componentService.setIsTracking(false);
+            } else {
+              this._componentService.setIsTracking(true);
+            }            
           })
           .catch(() => {
             this._toastr.error(this.errorMessagesText.trackingError);
@@ -571,7 +576,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   openDialogDetalles() {
     this._componentService.setQueryDetalles(this.queryDetallesDialog);
     const dialogData = {
-      maxWidth: '900px',
+      maxWidth: '1100px',
       width: '95vw',
       maxHeight: '90vh',
       data: {

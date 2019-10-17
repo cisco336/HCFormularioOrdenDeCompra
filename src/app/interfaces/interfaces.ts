@@ -100,6 +100,7 @@ export interface InfoBaseOC {
   GUIA: string;
   CUMPLIDO: string;
   TRANSPORTADORA: string;
+  OBSERVACIONES: string;
 }
 export interface Bultos {
   PESO: number;
