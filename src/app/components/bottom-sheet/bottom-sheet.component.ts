@@ -25,7 +25,6 @@ export class BottomSheetComponent implements OnInit {
 
   ngOnInit() {
     this.horaCambioControl.valueChanges.subscribe(s => {
-      console.log(moment(s, 'hh:mm:ss A').format('hh:mm:ss A'));
       if (moment(s, 'hh:mm:ss A').isValid()) {
         this.horaIngresada = moment(s, 'hh:mm:ss A').format('hh:mm:ss A');
         this.horaCambioControl.setErrors(null);
