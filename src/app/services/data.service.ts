@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-// import { environment } from '../environment/environment';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -65,7 +64,7 @@ export class DataService {
   }
 
   GetInfoBaseOc(data) {
-    return this.http.post(environment.APIORDENDECOMPRA + this.postTablaPrincipalOCCall, data, {
+    return this.http.get(environment.APIORDENDECOMPRA + this.getInfoBaseOcCall + data, {
       headers: this.generateBasicHeadersJWT()
     });
   }
