@@ -70,6 +70,7 @@
         [formControl]="horaCambioControl"
         value="{{ now }}"
       />
+      <mat-hint *ngIf="horaIngresada">Hora: {{horaIngresada}}</mat-hint>
       <mat-error>{{ strings.errorMessagesText.timeError }}</mat-error>
     </mat-form-field>
   </form>

@@ -16,6 +16,7 @@ export class BottomSheetComponent implements OnInit {
   horaCambioControl = new FormControl(this.now, [Validators.required]);
   today = moment();
   strings = strings;
+  horaIngresada: string;
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetComponent>,
@@ -24,7 +25,9 @@ export class BottomSheetComponent implements OnInit {
 
   ngOnInit() {
     this.horaCambioControl.valueChanges.subscribe(s => {
+      console.log(moment(s, 'hh:mm:ss A').format('hh:mm:ss A'));
       if (moment(s, 'hh:mm:ss A').isValid()) {
+        this.horaIngresada = moment(s, 'hh:mm:ss A').format('hh:mm:ss A');
         this.horaCambioControl.setErrors(null);
       } else {
         this.horaCambioControl.setErrors({ invalid: true });

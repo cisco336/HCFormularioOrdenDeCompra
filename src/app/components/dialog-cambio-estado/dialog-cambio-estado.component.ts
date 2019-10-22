@@ -96,6 +96,7 @@ export class DialogCambioEstadoComponent implements OnInit {
   estados: Estado[] = [];
   today = moment();
   strings = strings;
+  horaIngresada: string;
 
   constructor(
     public dialogRef: MatDialogRef<DialogCambioEstadoComponent>,
@@ -107,6 +108,8 @@ export class DialogCambioEstadoComponent implements OnInit {
   ngOnInit() {
     this.horaCambioControl.valueChanges.subscribe(s => {
       if (moment(s, 'hh:mm:ss A').isValid()) {
+        console.log(moment(s, 'hh:mm:ss A').format('hh:mm:ss A'));
+        this.horaIngresada = moment(s, 'hh:mm:ss A').format('hh:mm:ss A');
         this.horaCambioControl.setErrors(null);
       } else {
         this.horaCambioControl.setErrors({ invalid: true });
@@ -164,6 +167,7 @@ export class DialogCambioEstadoComponent implements OnInit {
       p_origen: '-1',
       p_usuario: this.data.data.usr
     };
+    console.log(query);
     this.chips.forEach(data => {
       query.p_pmg_po_number = data.PMG_PO_NUMBER;
       this._dataService
