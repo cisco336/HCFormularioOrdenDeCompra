@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, throwError } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, skip } from 'rxjs/operators';
 import {
   MatDialogRef,
   MatDialog,
@@ -145,6 +145,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'Select',
     'PMG_PO_NUMBER',
+    'AUX',
     // 'ESTADO',
     // 'FECHA_CREACION',
     // 'PMG_EXP_RCT_DATE',
@@ -185,12 +186,13 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
   longMessages = constants.longMessages;
   errorMessage = '';
 
+  filterInput = new FormControl('', []);
+
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
     this.screenWidth = window.innerWidth;
   }
-
   constructor(
     public _dialog: MatDialog,
     _formBuilder: FormBuilder,
@@ -213,40 +215,28 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     });
     this.onResize();
   }
-
   exportXlsx() {
     this._excelExport.exportAsExcelFile(
       this.dataSource.data,
       'Ordenes_de_compra_' + this.proveedor
     );
   }
-
   ngOnInit() {
     this.isLoading = true;
     this.routeSubscription = this._route.queryParams;
-    this.routeSubscription.subscribe(
-      params => {
-        if (!params['token'] || !params['token'].split(';')[0]) {
-          this.usr = '';
-          this.isLoading = false;
-          this.errorMessage = this.errorMessagesText.noPrivileges;
-        } else {
-          this.errorMessage = '';
-          this.usr = params['token'].split(';')[0];
-          this._componentService.setUser(this.usr);
-          this.appStart();
-        }
-      },
-      error => {
+    this.routeSubscription.pipe(skip(1)).subscribe(params => {
+      if (!params['token'] || !params['token'].split(';')[0]) {
+        this.usr = '';
         this.isLoading = false;
-        this.noData = true;
-        this.errorMessage = `${
-          this.errorMessagesText.noPrivileges
-        }. ${error.statusText || error.status}`;
+        this.errorMessage = this.errorMessagesText.noPrivileges;
+      } else {
+        this.errorMessage = '';
+        this.usr = params['token'].split(';')[0];
+        this._componentService.setUser(this.usr);
+        this.appStart();
       }
-    );
+    });
   }
-
   appStart(key?) {
     this.isLoading = true;
     this._dataService
@@ -302,9 +292,11 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
                   } else {
                     this._componentService.setEstados(data['Value']);
                     this.estados = data['Value'];
-                    this.mainFilterForm
-                      .get('estadosControl')
-                      .setValue(this.estados[0]);
+                    const x = this.estados[0];
+                    x.DESCRIPCION =
+                      x.DESCRIPCION.charAt(0).toUpperCase() +
+                      x.DESCRIPCION.substr(1).toLowerCase();
+                    this.mainFilterForm.get('estadosControl').setValue(x);
                     this.isLoading = false;
                     this._componentService.setEstados(this.estados);
                     this.filteredEstados = this.mainFilterForm
@@ -369,7 +361,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         }
       );
   }
-
   errorHandling(error) {
     let toastrError;
     switch (error.status) {
@@ -396,18 +387,16 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
     this.noData = true;
     this.isLoading = false;
   }
-
   ngOnDestroy() {
     this.fechaInicioSubscription.unsubscribe();
     this.fechaFinSubscription.unsubscribe();
     this.proveedoresControlSubscription.unsubscribe();
     this.routeSubscription.unsubscribe();
-    // this.cambioEstadoSubscription.unsubscribe();
-    // this.detallesSubscription.unsubscribe();
-    // this.guiaSubscription.unsubscribe();
   }
-
   consultar() {
+    if (this.filterInput.value !== '') {
+      this.filterInput.setValue(null);
+    }
     this.isLoading = true;
     if (this.dataSource !== undefined) {
       this.dataSource.data = [];
@@ -449,7 +438,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
         }
       );
   }
-
   compareDates() {
     const form = this.mainFilterForm;
     if (
@@ -469,19 +457,16 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
   masterToggle() {
     this.isAllSelected()
       ? this.selection.clear()
       : this.dataSource.data.forEach(row => this.selection.select(row));
   }
-
   checkboxLabel(row?: OrdenDeCompra): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
@@ -490,19 +475,15 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       'Orden'
     ] + 1}`;
   }
-
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
   displayProveedor(data?: Proveedores): string | undefined {
     return data ? data.DESCRIPCION : undefined;
   }
-
   displayEstados(data?: Estado): string | undefined {
     return data ? data.DESCRIPCION : undefined;
   }
-
   private _filterProveedor(DESCRIPCION: string): Proveedores[] {
     const filterValue = DESCRIPCION.toLowerCase();
 
@@ -510,7 +491,6 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       option => option.DESCRIPCION.toLowerCase().indexOf(filterValue) >= 0
     );
   }
-
   private _filterEstados(DESCRIPCION: string): Estado[] {
     const filterValue = DESCRIPCION.toLowerCase();
 
@@ -518,37 +498,85 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       option => option.DESCRIPCION.toLowerCase().indexOf(filterValue) >= 0
     );
   }
-
   getOrdenDetalle(element, guiaOrden?) {
-    if (!this.aux) {
-      this.aux = true;
-      this.queryDetallesDialog.p_pmg_po_number = element;
-      this._dataService
-        .postTablaPrincipalOC(this.queryDetallesDialog)
-        .toPromise()
-        .then(
-          result => {
-            this.aux = false;
-            if (result) {
-              this._componentService.setDetalleOC(result['Value']);
-              if (guiaOrden) {
-                this.generateGuide();
-              } else {
-                this.openDialogDetalles();
+    if (element) {
+      this._componentService.setGeneraGuia(element.GENERA_GUIA);
+      if (!this.aux) {
+        this.aux = true;
+        this.queryDetallesDialog.p_pmg_po_number = element.PMG_PO_NUMBER;
+        this._dataService.GetInfoBaseOc(element.PMG_PO_NUMBER).toPromise().then(data => {
+          this._componentService.detalleOC.next(data['Value'][0]);
+          this._componentService.setDireccionDestino({
+            direccion: data['Value'][0].DIRECCION_ENTREGA,
+            ciudad: data['Value'][0].CODIGO_DANE_DESTINO
+          });
+          this._componentService.setDireccionOrigen({
+            direccion: data['Value'][0].DIRECCION_ORIGEN,
+            ciudad: data['Value'][0].CODIGO_DANE_ORIGEN
+          });
+        });
+        this._componentService.fechasOC.next({
+          FECHA_MAXIMA_OC: element.FECHA_MAXIMA_OC,
+          FECHA_MINIMA_OC: element.FECHA_MINIMA_OC
+        });
+        this._dataService
+          .postTablaPrincipalOC(this.queryDetallesDialog)
+          .toPromise()
+          .then(
+            result => {
+              this.aux = false;
+              if (result) {
+                this._componentService.setDetalleOC(result['Value']);
+                if (guiaOrden) {
+                  this.generateGuide();
+                } else {
+                  this.openDialogDetalles();
+                }
               }
+            },
+            error => {
+              this.aux = false;
+              this.errorHandling(error);
             }
-          },
-          error => {
-            this.aux = false;
-            this.errorHandling(error);
-          }
-        );
+          );
+        const form = this.mainFilterForm;
+        const queryTracking = {
+          p_transaccion: 'TR',
+          p_pmg_po_number: element.PMG_PO_NUMBER,
+          p_prd_lvl_child: -1,
+          p_vpc_tech_key: form.get('proveedorControl').value['ID'],
+          p_fecha_inicio: form
+            .get('fechaInicioControl')
+            .value.format('DD/MM/YYYY'),
+          p_fecha_fin: form.get('fechaFinControl').value.format('DD/MM/YYYY'),
+          p_fecha_real: '-1',
+          p_id_estado: form.get('estadosControl').value.ID,
+          p_origen: '-1',
+          p_usuario: this.usr
+        };
+        this._dataService
+          .postTablaPrincipalOC(queryTracking)
+          .toPromise()
+          .then(data => {
+            this._componentService.setTracking(data);
+            if (data["Value"][0]["Código"] === "4") {
+              this._componentService.setIsTracking(false);
+            } else {
+              this._componentService.setIsTracking(true);
+            }            
+          })
+          .catch(() => {
+            this._toastr.error(this.errorMessagesText.trackingError);
+          });
+      }
+    } else {
+      this._toastr.error('Error al obtener el detalle de la orden de compra');
     }
   }
   openDialogDetalles() {
     this._componentService.setQueryDetalles(this.queryDetallesDialog);
     const dialogData = {
-      maxWidth: '900px',
+      maxWidth: '1100px',
       width: '95vw',
       maxHeight: '90vh',
       data: {
@@ -567,10 +595,7 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(
         () => {
-          if (this._componentService.closeDialog().value) {
-            this.consultar();
-            this.applyFilter('');
-          }
+          this.refreshData();
         },
         error => {
           this._toastr.error(error);
@@ -625,12 +650,13 @@ export class OrdenesCompraComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(
         () => {
-          if (this._componentService.closeDialog().value) {
-            this.consultar();
-            this.applyFilter('');
-          }
+          this.refreshData();
         },
         error => this._toastr.error(error)
       );
+  }
+  refreshData() {
+    this.consultar();
+    this.filterInput.reset();
   }
 }

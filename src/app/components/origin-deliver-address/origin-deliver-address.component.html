@@ -5,11 +5,13 @@
     </div>
     <mat-card-content>
       <mat-form-field>
-        <textarea
+        <input
           matInput
+          aria-label="strings.provider"
           placeholder="{{ strings.strings.address }}"
           formControlName="originAddress"
-        ></textarea>
+          #direccionOrigen
+        />
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <input
@@ -36,6 +38,7 @@
       </mat-form-field>
     </mat-card-content>
   </mat-card>
+
   <mat-card class="mat-elevation-z0">
     <div class="mat-card-header">
       <span>Destino:</span><mat-icon>home</mat-icon>
@@ -43,22 +46,36 @@
     <mat-card-content>
       <mat-form-field>
         <input
-          type="text"
           placeholder="{{ strings.strings.address }}"
           aria-label="strings.provider"
           matInput
-          disabled
+          formControlName="destinyAddress"
           #direccionDestino
         />
       </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="{{ strings.strings.cities }}"
-          disabled
-          #ciudadDestino
-        />
-      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <input
+            type="text"
+            placeholder="{{ strings.strings.cities }}"
+            aria-label="strings.strings.cities"
+            matInput
+            required
+            formControlName="destinyCity"
+            [matAutocomplete]="ciudadDestino"
+          />
+          <mat-autocomplete
+            #ciudadDestino="matAutocomplete"
+            [displayWith]="displayOrigen"
+          >
+            <mat-option
+              *ngFor="let option of filteredDestino | async"
+              [value]="option"
+            >
+              {{ option.DESCRIPCION }}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <mat-error>{{ strings.requiredField }}</mat-error> -->
+        </mat-form-field>
     </mat-card-content>
   </mat-card>
 </form>

@@ -11,7 +11,7 @@ export const environment = {
   USR: 'EMPCAR01',
   PASSWD: 'EMPCAR1',
   GUIA: 'http://200.69.100.66/ServicioLiquidacionRESTpruebas/Service1.svc/Generacion',
-  APIGUIA: 'http://10.23.14.164:9001/Servicios/Transportadora_1.0.0/api'
+  APIGUIA: 'http://10.23.14.163:9001/Servicios/Transportadora_1.0.0/api'
 };
 
 /*

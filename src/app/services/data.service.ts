@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Constants } from '../constants/constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class DataService {
   protected generateBasicHeadersJWT(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Ocp-Apim-Subscription-Key': Constants.SUBSCRIPTIONKEY,
+      // 'Ocp-Apim-Subscription-Key': environment.SUBSCRIPTIONKEY,
       Authorization: 'Bearer ' + this.token.value
     });
   }
@@ -35,70 +35,70 @@ export class DataService {
   protected generateGuideHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: 'Basic ' + btoa(Constants.USRPASSWD)
+      Authorization: 'Basic ' + btoa(environment.USRPASSWD)
     });
   }
 
   getDatosProveedor(data) {
-    return this.http.get(Constants.APIORDENDECOMPRA + this.getDatosProveedorCall + '/' + data, {
+    return this.http.get(environment.APIORDENDECOMPRA + this.getDatosProveedorCall + '/' + data, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   getProveedores() {
-    return this.http.get(Constants.APIORDENDECOMPRA + this.getProveedoresCall, {
+    return this.http.get(environment.APIORDENDECOMPRA + this.getProveedoresCall, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   getEstados() {
-    return this.http.get(Constants.APIORDENDECOMPRA + this.getEstadosCall, {
+    return this.http.get(environment.APIORDENDECOMPRA + this.getEstadosCall, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   postTablaPrincipalOC(data) {
-    return this.http.post(Constants.APIORDENDECOMPRA + this.postTablaPrincipalOCCall, data, {
+    return this.http.post(environment.APIORDENDECOMPRA + this.postTablaPrincipalOCCall, data, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   GetInfoBaseOc(data) {
-    return this.http.get(Constants.APIORDENDECOMPRA + this.getInfoBaseOcCall + data, {
+    return this.http.get(environment.APIORDENDECOMPRA + this.getInfoBaseOcCall + data, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   GetGuia(data) {
-    return this.http.get(Constants.APIGUIA + this.getGuiaCall + data);
+    return this.http.get(environment.APIGUIA + this.getGuiaCall + data);
   }
 
   PostBultos(data) {
-    return this.http.post(Constants.APIGUIA + this.postBultosCall, data, {
+    return this.http.post(environment.APIGUIA + this.postBultosCall, data, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   GetCiudades(data) {
-    return this.http.get(Constants.APIGUIA + this.getCiudadesCall + data, {
+    return this.http.get(environment.APIGUIA + this.getCiudadesCall + data, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   PostInfoGuia(data) {
-    return this.http.post(Constants.APIGUIA + this.postInfoGuiaCall, data, {
+    return this.http.post(environment.APIGUIA + this.postInfoGuiaCall, data, {
       headers: this.generateBasicHeadersJWT()
     });
   }
 
   SetDatosGuia(data) {
-    return this.http.put(Constants.APIGUIA + this.putSetDatosGuiaCall, data, {
+    return this.http.put(environment.APIGUIA + this.putSetDatosGuiaCall, data, {
       headers: this.generateGuideHeaders()
     });
   }
 
   PostSolicitarGuia(data) {
-    return this.http.post(Constants.GUIA, data, {
+    return this.http.post(environment.GUIA, data, {
       headers: this.generateGuideHeaders()
     });
   }
