@@ -24,6 +24,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { BottomSheetComponent } from '../bottom-sheet/bottom-sheet.component';
 import { BottomSheetImgComponent } from '../bottom-sheet-img/bottom-sheet-img.component';
 import * as strings from '../../constants/constants';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: "app-dialog-detalles",
@@ -140,20 +141,24 @@ export class DialogDetallesComponent implements OnInit, OnDestroy {
     };
     
     this.GetInfoBaseOcSubscription = this._dataService
-      .GetInfoBaseOc(queryConsultar)
+      .postTablaPrincipalOC(queryConsultar)
       .toPromise()
       .then(data => {
         this.direccionDestino = data["Value"][0]["DIRECCION_ENTREGA"];
         this._dataService
-          .GetCiudades("DANESAPS")
+          .GetCiudades("DANESAPS")  
           .toPromise()
           .then(ciudades => {
-            this.ciudad = ciudades;
-            this.ciudad = this.ciudad.filter(
-              s => s.ID === data["Value"][0]["CODIGO_DANE_DESTINO"]
-            )[0]["DESCRIPCION"];
+            
+            if (ciudades) {
+              this.ciudad = ciudades["Value"];
+              this.ciudad = this.ciudad.filter(
+                s => s.ID === data["Value"][0]["CODIGO_DANE_DESTINO"]
+              )[0]["DESCRIPCION"];
+            }
           })
           .catch(() => {
+            
             this.error = strings.errorMessagesText.citiesError;
             setTimeout(() => (this.error = ""), 3000);
           });
