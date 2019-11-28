@@ -25,6 +25,7 @@ import { BottomSheetComponent } from '../bottom-sheet/bottom-sheet.component';
 import { BottomSheetImgComponent } from '../bottom-sheet-img/bottom-sheet-img.component';
 import * as strings from '../../constants/constants';
 import { skip } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: "app-dialog-detalles",
@@ -106,6 +107,7 @@ export class DialogDetallesComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data,
     private _componentService: ComponentsService,
     private _dataService: DataService,
+    private _toastr: ToastrService,
     private _bottomSheet: MatBottomSheet
   ) {}
   ngOnInit() {
@@ -137,66 +139,70 @@ export class DialogDetallesComponent implements OnInit, OnDestroy {
       p_fecha_real: "-1",
       p_id_estado: -1,
       p_origen: "-1",
-      p_usuario: ""
+      p_usuario: this.data.data.usr
     };
-    
+
     this.GetInfoBaseOcSubscription = this._dataService
       .postTablaPrincipalOC(queryConsultar)
       .toPromise()
       .then(data => {
-        this.direccionDestino = data["Value"][0]["DIRECCION_ENTREGA"];
-        this._dataService
-          .GetCiudades("DANESAPS")  
-          .toPromise()
-          .then(ciudades => {
-            
-            if (ciudades) {
-              this.ciudad = ciudades["Value"];
-              this.ciudad = this.ciudad.filter(
-                s => s.ID === data["Value"][0]["CODIGO_DANE_DESTINO"]
-              )[0]["DESCRIPCION"];
-            }
-          })
-          .catch(() => {
-            
-            this.error = strings.errorMessagesText.citiesError;
-            setTimeout(() => (this.error = ""), 3000);
+        if (data["Value"][0]["Código"] !== "4") {
+          this.direccionDestino = data["Value"][0]["DIRECCION_ENTREGA"];
+          this._dataService
+            .GetCiudades("DANESAPS")
+            .toPromise()
+            .then(ciudades => {
+              debugger;
+              if (ciudades) {
+                this.ciudad = ciudades["Value"];
+                this.ciudad = this.ciudad.filter(
+                  s => s.ID === data["Value"][0]["CODIGO_DANE_DESTINO"]
+                )[0]["DESCRIPCION"];
+              }
+            })
+            .catch(() => {
+              debugger;
+              this.error = strings.errorMessagesText.citiesError;
+              setTimeout(() => (this.error = ""), 3000);
+            });
+          this._componentService.setInfoBaseOC(data["Value"][0]);
+          this.infoBaseOC = data["Value"][0];
+          const address = this._componentService.infoBaseOC.value;
+          this._componentService.setDireccionDestino({
+            direccion: address.DIRECCION_ENTREGA,
+            ciudad: address.CODIGO_DANE_DESTINO
           });
-        this._componentService.setInfoBaseOC(data["Value"][0]);
-        this.infoBaseOC = data["Value"][0];
-        const address = this._componentService.infoBaseOC.value;
-        this._componentService.setDireccionDestino({
-          direccion: address.DIRECCION_ENTREGA,
-          ciudad: address.CODIGO_DANE_DESTINO
-        });
-        this._componentService.setDireccionOrigen({
-          direccion: address.DIRECCION_ORIGEN,
-          ciudad: address.CODIGO_DANE_ORIGEN
-        });
-        if (this.infoBaseOC["Código"] === "4") {
-          this.cliente = false;
-          this.entrega = false;
-          this.observaciones = false;
+          this._componentService.setDireccionOrigen({
+            direccion: address.DIRECCION_ORIGEN,
+            ciudad: address.CODIGO_DANE_ORIGEN
+          });
+          if (this.infoBaseOC["Código"] === "4") {
+            this.cliente = false;
+            this.entrega = false;
+            this.observaciones = false;
+          } else {
+            this.cliente =
+              this.infoBaseOC.CEDULA === undefined &&
+              this.infoBaseOC.TELEFONOS === undefined &&
+              this.infoBaseOC.DIRECCION_CTE === undefined &&
+              this.infoBaseOC.CIUDAD_CTE === undefined
+                ? false
+                : true;
+            this.entrega =
+              this.infoBaseOC.DIRECCION_ENTREGA === undefined &&
+              this.infoBaseOC.CIUDAD_ENTREGA === undefined &&
+              this.infoBaseOC.TRANSPORTADORA === undefined &&
+              this.infoBaseOC.GUIA === undefined &&
+              this.infoBaseOC.CUMPLIDO === undefined
+                ? false
+                : true;
+            this.observaciones =
+              this.infoBaseOC.OBSERVACIONES === undefined ? false : true;
+          }
         } else {
-          this.cliente =
-            this.infoBaseOC.CEDULA === undefined &&
-            this.infoBaseOC.TELEFONOS === undefined &&
-            this.infoBaseOC.DIRECCION_CTE === undefined &&
-            this.infoBaseOC.CIUDAD_CTE === undefined
-              ? false
-              : true;
-          this.entrega =
-            this.infoBaseOC.DIRECCION_ENTREGA === undefined &&
-            this.infoBaseOC.CIUDAD_ENTREGA === undefined &&
-            this.infoBaseOC.TRANSPORTADORA === undefined &&
-            this.infoBaseOC.GUIA === undefined &&
-            this.infoBaseOC.CUMPLIDO === undefined
-              ? false
-              : true;
-          this.observaciones = 
-            this.infoBaseOC.OBSERVACIONES === undefined
-              ? false
-              : true;
+          this._toastr.info(
+            "No se pudo obtener datos de la informacion base para esta orden."
+          );
         }
       });
     this.numeroOrden = this.ordenCompra[0].PMG_PO_NUMBER;
