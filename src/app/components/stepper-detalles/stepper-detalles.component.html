@@ -90,7 +90,7 @@
         <button mat-stroked-button color="warn" matStepperPrevious>
           <mat-icon>navigate_before</mat-icon>{{ strings.strings.back }}
         </button>
-        <button mat-raised-button color="primary" (click)="buildBody(stepper)">
+        <button mat-raised-button color="primary" (click)="buildBody(stepper)" [disabled]="!isValidAddress">
           <mat-icon>navigate_next</mat-icon>{{ strings.strings.next }}
         </button>
       </div>

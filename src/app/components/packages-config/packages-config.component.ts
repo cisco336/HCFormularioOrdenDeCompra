@@ -15,6 +15,7 @@ import { DataService } from 'src/app/services/data.service';
 import { Subscription } from 'rxjs';
 import { DialogService } from 'src/app/services/dialog.service';
 import { ToastrService } from 'ngx-toastr';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: "app-packages-config",
@@ -75,7 +76,7 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
     });
     this.displayedColumns = [
       // 'ID_BULTO',
-      "BULTOS",
+      "BULTO",
       // 'CANTIDAD',
       "LARGO",
       "ANCHO",
@@ -149,13 +150,14 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
     this.postBultosSubscription = this._dataService.PostBultos(query).subscribe(
       response => {
         if (response["State"]) {
+          
           this.newResponse = response["Value"].map(
             s =>
               (s = {
                 ALTO: s.ALTO < 1 ? 1 : s.ALTO,
                 ANCHO: s.ANCHO < 1 ? 1 : s.ANCHO,
                 CANTIDAD: s.BULTO,
-                BULTOS: s.BULTOS,
+                BULTO: s.BULTO,
                 DECLARADO: s.DECLARADO < 1 ? 1 : s.DECLARADO,
                 ID_BULTO: s.ID_BULTO,
                 ID_BULTO_DETALLE: s.ID_BULTO_DETALLE,
@@ -163,7 +165,7 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
                 PESO: s.PESO < 1 ? 1 : s.PESO,
                 PMG_PO_NUMBER: s.PMG_PO_NUMBER,
                 STICKER: s.STICKER,
-                VOLUMEN: s.VOLUMEN
+                VOLUMEN: (s.ALTO * s.ANCHO * s.LARGO)
               })
           );
           this.dataSource.data = this.newResponse;
@@ -207,6 +209,8 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
   }
 
   addMagnitud() {
+    this.calc();
+    
     if (this.validate()) {
       this._componentService.setIsValid(true);
       this._componentService.setMagnitudes(this.newResponse);
@@ -214,6 +218,12 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
       this._componentService.setIsValid(false);
       this._toastr.error("No se permiten valores iguales o inferiores a cero");
     }
+  }
+
+  calc() {    
+    this.newResponse.forEach(element => {
+      element.VOLUMEN = (element.ALTO * element.ANCHO * element.LARGO)
+    });
   }
 
   validate(): boolean {

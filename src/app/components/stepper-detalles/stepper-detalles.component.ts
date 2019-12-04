@@ -99,6 +99,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   finalMessg: string;
   stepThreeMessg = "";
   isLoading = false;
+  isValidAddress;
   genera_guia: boolean;
   queryRotulo;
   guideQuery: any;
@@ -117,6 +118,14 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
     this._componentService.generaGuia.subscribe(
       change => (this.genera_guia = change)
     );
+
+    this._componentService
+      .getIsValidAddress()
+      .subscribe(value => {
+        
+        this.isValidAddress = value;
+      });
+
     this._componentService.aux.subscribe(val => (this.stepOne = val));
     this.finalMessg = strings.longMessages.generateOrderGuideAlertFinal;
     this.stepOne = false;
@@ -296,9 +305,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
           "No se ha generado configuracion de bultos"
         );
       } else if (!this._componentService.getIsValid().value) {
-        this._toastr.error(
-          "Debe editar al menos una cantidad de la configuracion de bultos"
-        );     
+        this._toastr.error("Por favor modificar las longitudes de los bultos");     
       } 
     }
   }

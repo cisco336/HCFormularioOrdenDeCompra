@@ -18,6 +18,7 @@ export class ComponentsService {
   resetBultos = new BehaviorSubject<boolean>(false);
   isTracking = new BehaviorSubject<boolean>(false);
   isValid = new BehaviorSubject<boolean>(false);
+  isValidAddress = new BehaviorSubject<boolean>(true);
   steps = new BehaviorSubject<{ two: false; three: false; four: false }>({
     two: false,
     three: false,
@@ -218,5 +219,12 @@ export class ComponentsService {
   }
   getIsValid() {
     return this.isValid;
+  }
+
+  setIsValidAddress(data) {
+    return this.isValidAddress.next(data);
+  }
+  getIsValidAddress() {
+    return this.isValidAddress;
   }
 }

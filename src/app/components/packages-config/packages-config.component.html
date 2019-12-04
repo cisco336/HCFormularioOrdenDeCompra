@@ -46,11 +46,11 @@
       <!-- </ng-container> -->
 
       <!-- BULTOS Column -->
-      <ng-container matColumnDef="BULTOS">
+      <ng-container matColumnDef="BULTO">
         <th mat-header-cell *matHeaderCellDef>
-          {{ strings.strings.packages }}
+          {{ strings.strings.package }}
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.BULTOS }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.BULTO }}</td>
         <!-- <td mat-footer-cell *matFooterCellDef></td> -->
       </ng-container>
 
@@ -135,7 +135,15 @@
           {{ strings.strings.volumne }}
         </th>
         <td mat-cell *matCellDef="let element">
-          {{ element.VOLUMEN }}
+          <!-- {{ element.VOLUMEN }} -->
+          <input
+            #peso="ngModel"
+            type="number"
+            min="0"
+            placeholder=""
+            [(ngModel)]="element.ALTO * element.ANCHO * element.LARGO"
+            readonly
+          />
         </td>
         <!-- <td mat-footer-cell *matFooterCellDef>{{ getTotal() }}</td> -->
       </ng-container>

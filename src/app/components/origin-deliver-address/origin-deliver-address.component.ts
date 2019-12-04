@@ -160,7 +160,7 @@ export class OriginDeliverAddressComponent implements OnInit, OnDestroy {
 
           this.addresses.valueChanges
             .subscribe(value => {
-              console.log(value);
+              this._componentService.setIsValidAddress(this.addresses.valid);
             });
 
         }
