@@ -112,11 +112,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService
   ) {}
 
-  ngOnInit() {
-    this._componentService.getSelectedSku()
-        .subscribe(
-          response => console.log(response)
-        );
+  ngOnInit() {    
 
     this._componentService.generaGuia.subscribe(
       change => (this.genera_guia = change)
@@ -154,7 +150,6 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
       .getSelectedSku()
       .subscribe(skusSub => {
         this.cambioEstadoSkus = skusSub;
-        console.log(this.cambioEstadoSkus);
         if (skusSub.length) {
           this.selectedSku = skusSub.filter(
             s => s.GUIA === "NA" || s.GUIA === "--"
@@ -227,7 +222,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
       p_origen: "-1",
       p_usuario: this._componentService.getUser().value
     };
-    console.log(query);
+    
     this.cambioEstadoSkus.forEach(data => {
       query.p_pmg_po_number = data.PMG_PO_NUMBER;
       query.p_prd_lvl_child = data.PRD_LVL_CHILD;
@@ -262,7 +257,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   }
 
   sendPackages(stepper: MatStepper) {
-    debugger;
+    
     if (
       this._componentService.getIsValid().value &&
       this._componentService.getIdBulto().value !== ""
@@ -310,8 +305,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
 
   buildBody(stepper: MatStepper) {
     const x = this._componentService;
-    console.log(x);
-
+    
     const query = {
       Transportadora: x.infoBaseOC.value.TRANSPORTADORA,
       CodigoInterno: x.infoBaseOC.value.PMG_PO_NUMBER,
@@ -327,8 +321,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
       .PostInfoGuia(query)
       .toPromise()
       .then(response => {
-        this.isLoading = true;
-        debugger;
+        this.isLoading = true;        
         this._componentService.setSteps({
           two: this._componentService.getSteps().value.two,
           three: this._componentService.getSteps().value.three,

@@ -152,7 +152,7 @@ export class DialogDetallesComponent implements OnInit, OnDestroy {
             .GetCiudades("DANESAPS")
             .toPromise()
             .then(ciudades => {
-              debugger;
+              
               if (ciudades) {
                 this.ciudad = ciudades["Value"];
                 this.ciudad = this.ciudad.filter(
@@ -161,7 +161,7 @@ export class DialogDetallesComponent implements OnInit, OnDestroy {
               }
             })
             .catch(() => {
-              debugger;
+              
               this.error = strings.errorMessagesText.citiesError;
               setTimeout(() => (this.error = ""), 3000);
             });
