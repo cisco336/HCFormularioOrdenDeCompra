@@ -124,18 +124,45 @@ export class OriginDeliverAddressComponent implements OnInit, OnDestroy {
             .setValue(component.direccionDestino.value.direccion);
           form.get('originCity').setValue(ciudadOrigen[0]);
           form.get('destinyCity').setValue(ciudadDestino[0]);
+          /* Direcciones */
           form
-            .get('originAddress')
-            .valueChanges.subscribe(a => this._componentService.direccionOrigen.next({
-              direccion: a,
-              ciudad: form.get('originCity').value
-            }));
+            .get('originAddress').valueChanges.subscribe(a => {
+              let ciudad = form.get("originCity").value;
+              this._componentService.direccionOrigen.next({
+                direccion: a,
+                ciudad: ciudad.ID
+              });
+            });
           form
-            .get('destinyAddress')
-            .valueChanges.subscribe(b => this._componentService.direccionDestino.next({
-              direccion: b,
-              ciudad: form.get('destinyCity').value
-            }));
+            .get('destinyAddress').valueChanges.subscribe(b => {
+              let ciudad = form.get("destinyCity").value;
+              this._componentService.direccionDestino.next({
+                direccion: b,
+                ciudad: ciudad.ID
+              });
+            });  
+
+          /* Ciudades */
+          form.get("originCity").valueChanges.subscribe(a => {
+            
+            this._componentService.direccionOrigen.next({
+              direccion: form.get("originAddress").value,
+              ciudad: a.ID
+            });
+          });
+
+          form.get("destinyCity").valueChanges.subscribe(b =>
+            this._componentService.direccionDestino.next({
+              direccion: form.get("destinyAddress").value,
+              ciudad: b.ID
+            })
+          );
+
+          this.addresses.valueChanges
+            .subscribe(value => {
+              console.log(value);
+            });
+
         }
       },
       () => {}
