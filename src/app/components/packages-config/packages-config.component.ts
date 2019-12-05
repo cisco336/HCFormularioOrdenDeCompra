@@ -143,7 +143,7 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
       Sku: this.hasDetails
         ? this.cleanString(this.selectedSkus)
         : this.cleanString(this.detalleOc),
-      ID_BULTO: this.IDBulto === null ? -1 : this.IDBulto,
+      IdBulto: this.IDBulto === null ? -1 : this.IDBulto,
       Magnitudes: null,
       Usuario: this._componentService.getUser().value
     };

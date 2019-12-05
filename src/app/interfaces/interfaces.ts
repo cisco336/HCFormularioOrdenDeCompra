@@ -137,7 +137,7 @@ export interface QueryBulto {
   Cantidad: number;
   Sticker: string;
   Sku: string;
-  ID_BULTO: number;
+  IdBulto: number;
   Magnitudes: QueryMagnitudes[];
   Usuario: string;
 }
