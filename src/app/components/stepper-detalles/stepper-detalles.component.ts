@@ -1,25 +1,25 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { ComponentsService } from 'src/app/services/components.service';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { BottomSheetComponent } from '../bottom-sheet/bottom-sheet.component';
-import { Estado, QueryBulto } from 'src/app/interfaces/interfaces';
-import { DataService } from 'src/app/services/data.service';
-import * as strings from '../../constants/constants';
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { STEPPER_GLOBAL_OPTIONS } from "@angular/cdk/stepper";
+import { ComponentsService } from "src/app/services/components.service";
+import { MatBottomSheet } from "@angular/material/bottom-sheet";
+import { BottomSheetComponent } from "../bottom-sheet/bottom-sheet.component";
+import { Estado, QueryBulto } from "src/app/interfaces/interfaces";
+import { DataService } from "src/app/services/data.service";
+import * as strings from "../../constants/constants";
 import {
   trigger,
   state,
   style,
   transition,
   animate
-} from '@angular/animations';
-import { Subscription } from 'rxjs';
-import * as Interfaces from '../../interfaces/interfaces';
-import { DialogService } from 'src/app/services/dialog.service';
-import { MatStepper } from '@angular/material';
-import { Constants } from '../../constants/constants';
-import { ToastrService } from 'ngx-toastr';
+} from "@angular/animations";
+import { Subscription } from "rxjs";
+import * as Interfaces from "../../interfaces/interfaces";
+import { DialogService } from "src/app/services/dialog.service";
+import { MatStepper } from "@angular/material";
+import { Constants } from "../../constants/constants";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-stepper-detalles",
@@ -113,18 +113,14 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
     private _dialogService: DialogService
   ) {}
 
-  ngOnInit() {    
-
+  ngOnInit() {
     this._componentService.generaGuia.subscribe(
       change => (this.genera_guia = change)
     );
 
-    this._componentService
-      .getIsValidAddress()
-      .subscribe(value => {
-        
-        this.isValidAddress = value;
-      });
+    this._componentService.getIsValidAddress().subscribe(value => {
+      this.isValidAddress = value;
+    });
 
     this._componentService.aux.subscribe(val => (this.stepOne = val));
     this.finalMessg = strings.longMessages.generateOrderGuideAlertFinal;
@@ -163,7 +159,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
           this.selectedSku = skusSub.filter(
             s => s.GUIA === "NA" || s.GUIA === "--"
           );
-        }else{
+        } else {
           this.selectedSku = [];
         }
         if (this.hasDetails) {
@@ -231,7 +227,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
       p_origen: "-1",
       p_usuario: this._componentService.getUser().value
     };
-    
+
     this.cambioEstadoSkus.forEach(data => {
       query.p_pmg_po_number = data.PMG_PO_NUMBER;
       query.p_prd_lvl_child = data.PRD_LVL_CHILD;
@@ -266,7 +262,6 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
   }
 
   sendPackages(stepper: MatStepper) {
-    
     if (
       this._componentService.getIsValid().value &&
       this._componentService.getIdBulto().value !== ""
@@ -301,18 +296,16 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
         });
     } else {
       if (this._componentService.getIdBulto().value == "") {
-        this._toastr.error(
-          "No se ha generado configuracion de bultos"
-        );
+        this._toastr.error("No se ha generado configuracion de bultos");
       } else if (!this._componentService.getIsValid().value) {
-        this._toastr.error("Por favor modificar las longitudes de los bultos");     
-      } 
+        this._toastr.error("Por favor modificar las longitudes de los bultos");
+      }
     }
   }
 
   buildBody(stepper: MatStepper) {
     const x = this._componentService;
-    
+
     const query = {
       Transportadora: x.infoBaseOC.value.TRANSPORTADORA,
       CodigoInterno: x.infoBaseOC.value.PMG_PO_NUMBER,
@@ -328,7 +321,7 @@ export class StepperDetallesComponent implements OnInit, OnDestroy {
       .PostInfoGuia(query)
       .toPromise()
       .then(response => {
-        this.isLoading = true;        
+        this.isLoading = true;
         this._componentService.setSteps({
           two: this._componentService.getSteps().value.two,
           three: this._componentService.getSteps().value.three,
