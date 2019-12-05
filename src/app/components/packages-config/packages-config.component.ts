@@ -158,7 +158,7 @@ export class PackagesConfigComponent implements OnInit, OnDestroy {
                 ANCHO: s.ANCHO < 1 ? 1 : s.ANCHO,
                 CANTIDAD: s.BULTO,
                 BULTO: s.BULTO,
-                DECLARADO: s.DECLARADO < 1 ? 1 : s.DECLARADO,
+                DECLARADO: s.DECLARADO,
                 ID_BULTO: s.ID_BULTO,
                 ID_BULTO_DETALLE: s.ID_BULTO_DETALLE,
                 LARGO: s.LARGO < 1 ? 1 : s.LARGO,

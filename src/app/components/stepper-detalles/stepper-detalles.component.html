@@ -39,11 +39,20 @@
           <mat-icon>category</mat-icon>{{ strings.strings.changeState }}
         </button>
         <button
-          *ngIf="genera_guia"
+          *ngIf="genera_guia && details"
           mat-raised-button
           color="primary"
           matStepperNext
           [disabled]="!selectedSku?.length"
+        >
+          <mat-icon>navigate_next</mat-icon>{{ strings.strings.generateGuide }}
+        </button>
+        <button
+          *ngIf="genera_guia && !details"
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          [disabled]="selectedSku?.length"
         >
           <mat-icon>navigate_next</mat-icon>{{ strings.strings.generateGuide }}
         </button>
